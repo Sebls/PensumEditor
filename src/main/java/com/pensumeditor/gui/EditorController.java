@@ -42,6 +42,7 @@ public class EditorController implements Initializable {
         semesterNumber = 10;
         semesterSubjects = 6;
         createSubjectItemMatrix();
+        updateSubjects();
     }
 
     public void updateSubjects() {
