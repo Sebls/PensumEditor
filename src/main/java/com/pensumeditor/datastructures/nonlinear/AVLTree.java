@@ -1,29 +1,64 @@
 package com.pensumeditor.datastructures.nonlinear;
 
-// Tree class
-public class AVLTree {
-    class Node {
-        int item, height;
-        Node left, right;
+import com.pensumeditor.datastructures.linear.CircularArrayList;
+import com.pensumeditor.datastructures.linear.List;
 
-        Node(int d) {
-            item = d;
+import java.util.NoSuchElementException;
+
+public class AVLTree {
+    public class Node {
+        private int key, height;
+        private Node left, right, parent;
+        public Node(int key) {
+            this.key = key;
+            this.left = this.right = this.parent = null;
             height = 1;
         }
+        public int getKey() {
+            return key;
+        }
     }
-    public Node root;
+    private Node root;
+    public AVLTree(int key) {
+        root = new Node(key);
+    }
+    public AVLTree() {
+        root = null;
+    }
+    public void makeEmpty() {
+        root = null;
+    }
+    public Node getRoot() {
+        return root;
+    }
+    public boolean isEmpty() {
+        return root == null;
+    }
 
-    int height(Node N) {
+    public int height(){
+        return height(root);
+    }
+    private int height(Node N) {
         if (N == null)
             return 0;
         return N.height;
     }
 
-    int max(int a, int b) {
+    public int size(){
+        return size(root);
+    }
+    private int size(Node node) {
+        if (node == null) {
+            return 0;
+        }
+        return 1 + size(node.left) + size(node.right);
+    }
+
+    private int max(int a, int b) {
         return (a > b) ? a : b;
     }
 
-    public Node rightRotate(Node y) {
+    private Node rightRotate(Node y) {
         Node x = y.left;
         Node T2 = x.right;
         x.right = y;
@@ -33,7 +68,7 @@ public class AVLTree {
         return x;
     }
 
-    public Node leftRotate(Node x) {
+    private Node leftRotate(Node x) {
         Node y = x.right;
         Node T2 = y.left;
         y.left = x;
@@ -43,22 +78,25 @@ public class AVLTree {
         return y;
     }
 
-    // Get balance factor of a node
-    public int getBalanceFactor(Node N) {
+    private int getBalanceFactor(Node N) {
         if (N == null)
             return 0;
         return height(N.left) - height(N.right);
     }
 
-    // Insert a node
-    public Node insertNode(Node node, int item) {
+    public Node insert(int key) {
+        root = insertNode(root, key);
+        return root;
+    }
+
+    private Node insertNode(Node node, int item) {
 
         // Find the position and insert the node
         if (node == null)
             return (new Node(item));
-        if (item < node.item)
+        if (item < node.key)
             node.left = insertNode(node.left, item);
-        else if (item > node.item)
+        else if (item > node.key)
             node.right = insertNode(node.right, item);
         else
             return node;
@@ -68,17 +106,17 @@ public class AVLTree {
         node.height = 1 + max(height(node.left), height(node.right));
         int balanceFactor = getBalanceFactor(node);
         if (balanceFactor > 1) {
-            if (item < node.left.item) {
+            if (item < node.left.key) {
                 return rightRotate(node);
-            } else if (item > node.left.item) {
+            } else if (item > node.left.key) {
                 node.left = leftRotate(node.left);
                 return rightRotate(node);
             }
         }
         if (balanceFactor < -1) {
-            if (item > node.right.item) {
+            if (item > node.right.key) {
                 return leftRotate(node);
-            } else if (item < node.right.item) {
+            } else if (item < node.right.key) {
                 node.right = rightRotate(node.right);
                 return leftRotate(node);
             }
@@ -86,22 +124,108 @@ public class AVLTree {
         return node;
     }
 
-    public Node nodeWithMimumValue(Node node) {
+    public int findMin(){
+        return findMin(root).key;
+    }
+    private Node findMin(Node node) {
+        if (isEmpty()) {
+            throw new NoSuchElementException("Empty tree");
+        }
         Node current = node;
         while (current.left != null)
             current = current.left;
         return current;
     }
 
-    // Delete a node
-    public Node deleteNode(Node root, int item) {
+    public Node find(int value) {
+        return find(value, root);
+    }
 
-        // Find the node to be deleted and remove it
+    private Node find(int value, Node node) {
+        if (node != null) {
+            if (node.key == value) {
+                return node;
+            } else if (node.key > value) {
+                if (node.left != null) {
+                    return find(value, node.left);
+                }
+                return node;
+            } else {
+                if (node.right != null) {
+                    return find(value, node.right);
+                }
+            }
+            return node;
+        }
+        return null;
+    }
+    public int findMax() {
+        return findMax(root).key;
+    }
+    private Node findMax(Node node) {
+        if (isEmpty()) {
+            throw new NoSuchElementException("Empty tree");
+        }
+        Node current = node;
+        while (current.right != null) {
+            current = current.right;
+        }
+        return current;
+    }
+
+    public Node next(Node node) {
+        if (node.right != null) {
+            return LeftDescendant(node.right);
+        } else {
+            return RightAncestor(node);
+        }
+    }
+
+    private Node LeftDescendant(Node node) {
+        if (node.left != null) {
+            return LeftDescendant(node.left);
+        } else {
+            return node;
+        }
+    }
+
+    private Node RightAncestor(Node node) {
+        if (node != null) {
+            if (node.parent != null && node.key < node.parent.key) {
+                return node.parent;
+            } else {
+                return RightAncestor(node.parent);
+            }
+        }
+        return null;
+    }
+
+    public List<AVLTree.Node> rangeSearch(int x, int y) {
+        return rangeSearch(x,y,root);
+    }
+
+    private List<AVLTree.Node> rangeSearch(int x, int y, AVLTree.Node R) {
+        List<AVLTree.Node> L = new CircularArrayList<>();
+        AVLTree.Node N = find(x, R);
+        while (N != null && N.key <= y) {
+            if (N.key >= x) {
+                L.add(N);
+            }
+            N = next(N);
+        }
+        return L;
+    }
+
+    public void delete(int item){
+        deleteNode(root, item);
+    }
+    private Node deleteNode(Node root, int item) {
+
         if (root == null)
             return root;
-        if (item < root.item)
+        if (item < root.key)
             root.left = deleteNode(root.left, item);
-        else if (item > root.item)
+        else if (item > root.key)
             root.right = deleteNode(root.right, item);
         else {
             if ((root.left == null) || (root.right == null)) {
@@ -116,15 +240,14 @@ public class AVLTree {
                 } else
                     root = temp;
             } else {
-                Node temp = nodeWithMimumValue(root.right);
-                root.item = temp.item;
-                root.right = deleteNode(root.right, temp.item);
+                Node temp = findMin(root.right);
+                root.key = temp.key;
+                root.right = deleteNode(root.right, temp.key);
             }
         }
         if (root == null)
             return root;
 
-        // Update the balance factor of each node and balance the tree
         root.height = max(height(root.left), height(root.right)) + 1;
         int balanceFactor = getBalanceFactor(root);
         if (balanceFactor > 1) {
@@ -146,16 +269,48 @@ public class AVLTree {
         return root;
     }
 
-    public void preOrder(Node node) {
+    public void preOrder(){
+        preOrder(root);
+        System.out.println();
+    }
+    private void preOrder(Node node) {
         if (node != null) {
-            System.out.print(node.item + " ");
+            System.out.print(node.key + " ");
             preOrder(node.left);
             preOrder(node.right);
         }
     }
 
-    // Print the tree
-    public void printTree(Node currPtr, String indent, boolean last) {
+    public void postOrder() {
+        postOrder(root);
+        System.out.println();
+    }
+
+    private void postOrder(Node node) {
+        if (node != null) {
+            postOrder(node.left);
+            postOrder(node.right);
+            System.out.print(node.key + " ");
+        }
+    }
+
+    public void inOrder() {
+        inOrder(root);
+        System.out.println();
+    }
+
+    private void inOrder(Node node) {
+        if (node != null) {
+            inOrder(node.left);
+            System.out.print(node.key + " ");
+            inOrder(node.right);
+        }
+    }
+
+    public void printTree(){
+        printTree(root,"",true);
+    }
+    private void printTree(Node currPtr, String indent, boolean last) {
         if (currPtr != null) {
             System.out.print(indent);
             if (last) {
@@ -165,7 +320,7 @@ public class AVLTree {
                 System.out.print("L----");
                 indent += "|  ";
             }
-            System.out.println(currPtr.item);
+            System.out.println(currPtr.key);
             printTree(currPtr.left, indent, false);
             printTree(currPtr.right, indent, true);
         }
