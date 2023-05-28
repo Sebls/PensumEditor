@@ -1,10 +1,12 @@
 package com.pensumeditor.gui;
 
 import com.pensumeditor.datastructures.nonlinear.AVLTree;
+import com.pensumeditor.datastructures.nonlinear.BinarySearchTree;
+import com.pensumeditor.datastructures.nonlinear.Tree;
 
 public class Test {
     public static void main(String[] args) {
-        AVLTree tree = new AVLTree();
+        Tree tree = new AVLTree();
         tree.insert(5);
         tree.insert(4);
         tree.insert(6);
@@ -17,11 +19,11 @@ public class Test {
         System.out.println(tree.findMax());
         System.out.println(tree.height());
         System.out.println(tree.size());
-        tree.inOrder();
-        tree.preOrder();
-        tree.postOrder();
-        System.out.println(tree.find(7).getKey());
-        System.out.println(tree.getRoot().getKey());
-        System.out.println(tree.rangeSearch(5,7));
+        tree.inOrderTraversal();
+        tree.preOrderTraversal();
+        tree.postOrderTraversal();
+        System.out.println(tree.search(7));
+        System.out.println(tree.search(10));
+        System.out.println(tree.rangeSearch(0,10));
     }
 }

@@ -5,7 +5,7 @@ import com.pensumeditor.datastructures.linear.List;
 
 import java.util.NoSuchElementException;
 
-public class AVLTree {
+public class AVLTree implements Tree {
     public class Node {
         private int key, height;
         private Node left, right, parent;
@@ -84,9 +84,8 @@ public class AVLTree {
         return height(N.left) - height(N.right);
     }
 
-    public Node insert(int key) {
+    public void insert(int key) {
         root = insertNode(root, key);
-        return root;
     }
 
     private Node insertNode(Node node, int item) {
@@ -123,20 +122,9 @@ public class AVLTree {
         }
         return node;
     }
-
-    public int findMin(){
-        return findMin(root).key;
+    public int search(int key) {
+        return find(key).key;
     }
-    private Node findMin(Node node) {
-        if (isEmpty()) {
-            throw new NoSuchElementException("Empty tree");
-        }
-        Node current = node;
-        while (current.left != null)
-            current = current.left;
-        return current;
-    }
-
     public Node find(int value) {
         return find(value, root);
     }
@@ -158,6 +146,19 @@ public class AVLTree {
             return node;
         }
         return null;
+    }
+    public int findMin(){
+        return findMin(root).key;
+    }
+
+    private Node findMin(Node node) {
+        if (isEmpty()) {
+            throw new NoSuchElementException("Empty tree");
+        }
+        Node current = node;
+        while (current.left != null)
+            current = current.left;
+        return current;
     }
     public int findMax() {
         return findMax(root).key;
@@ -200,16 +201,16 @@ public class AVLTree {
         return null;
     }
 
-    public List<AVLTree.Node> rangeSearch(int x, int y) {
+    public List<Integer> rangeSearch(int x, int y) {
         return rangeSearch(x,y,root);
     }
 
-    private List<AVLTree.Node> rangeSearch(int x, int y, AVLTree.Node R) {
-        List<AVLTree.Node> L = new CircularArrayList<>();
-        AVLTree.Node N = find(x, R);
+    private List<Integer> rangeSearch(int x, int y, Node R) { // ARREGLAR
+        List<Integer> L = new CircularArrayList<>();
+        Node N = find(x, R);
         while (N != null && N.key <= y) {
             if (N.key >= x) {
-                L.add(N);
+                L.add(N.key);
             }
             N = next(N);
         }
@@ -220,7 +221,6 @@ public class AVLTree {
         deleteNode(root, item);
     }
     private Node deleteNode(Node root, int item) {
-
         if (root == null)
             return root;
         if (item < root.key)
@@ -245,9 +245,6 @@ public class AVLTree {
                 root.right = deleteNode(root.right, temp.key);
             }
         }
-        if (root == null)
-            return root;
-
         root.height = max(height(root.left), height(root.right)) + 1;
         int balanceFactor = getBalanceFactor(root);
         if (balanceFactor > 1) {
@@ -269,41 +266,41 @@ public class AVLTree {
         return root;
     }
 
-    public void preOrder(){
-        preOrder(root);
+    public void preOrderTraversal(){
+        preOrderTraversal(root);
         System.out.println();
     }
-    private void preOrder(Node node) {
+    private void preOrderTraversal(Node node) {
         if (node != null) {
             System.out.print(node.key + " ");
-            preOrder(node.left);
-            preOrder(node.right);
+            preOrderTraversal(node.left);
+            preOrderTraversal(node.right);
         }
     }
 
-    public void postOrder() {
-        postOrder(root);
+    public void postOrderTraversal() {
+        postOrderTraversal(root);
         System.out.println();
     }
 
-    private void postOrder(Node node) {
+    private void postOrderTraversal(Node node) {
         if (node != null) {
-            postOrder(node.left);
-            postOrder(node.right);
+            postOrderTraversal(node.left);
+            postOrderTraversal(node.right);
             System.out.print(node.key + " ");
         }
     }
 
-    public void inOrder() {
-        inOrder(root);
+    public void inOrderTraversal() {
+        inOrderTraversal(root);
         System.out.println();
     }
 
-    private void inOrder(Node node) {
+    private void inOrderTraversal(Node node) {
         if (node != null) {
-            inOrder(node.left);
+            inOrderTraversal(node.left);
             System.out.print(node.key + " ");
-            inOrder(node.right);
+            inOrderTraversal(node.right);
         }
     }
 

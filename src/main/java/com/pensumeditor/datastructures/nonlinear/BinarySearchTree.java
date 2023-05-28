@@ -5,7 +5,7 @@ import com.pensumeditor.datastructures.linear.List;
 
 import java.nio.BufferUnderflowException;
 
-public class BinarySearchTree {
+public class BinarySearchTree implements Tree {
     public class Node {
         private int key;
         private Node left;
@@ -49,9 +49,8 @@ public class BinarySearchTree {
         return root == null;
     }
 
-    public Node insert(int key) {
+    public void insert(int key) {
         root = insert(key, root);
-        return root;
     }
 
     private Node insert(int key, Node node) {
@@ -66,6 +65,10 @@ public class BinarySearchTree {
             node.left.parent = node;
         }
         return node;
+    }
+
+    public int search(int key) {
+        return find(key).key;
     }
 
     public Node find(int value) {
@@ -171,16 +174,16 @@ public class BinarySearchTree {
         return null;
     }
 
-    public List<Node> rangeSearch(int x, int y) {
+    public List<Integer> rangeSearch(int x, int y) {
         return rangeSearch(x,y,root);
     }
 
-    private List<Node> rangeSearch(int x, int y, Node R) {
-        List<Node> L = new CircularArrayList<>();
+    private List<Integer> rangeSearch(int x, int y, Node R) {
+        List<Integer> L = new CircularArrayList<>();
         Node N = find(x, R);
         while (N != null && N.key <= y) {
             if (N.key >= x) {
-                L.add(N);
+                L.add(N.key);
             }
             N = next(N);
         }
@@ -265,6 +268,25 @@ public class BinarySearchTree {
             postOrderTraversal(node.left);
             postOrderTraversal(node.right);
             System.out.print(node.key + " ");
+        }
+    }
+
+    public void printTree(){
+        printTree(root,"",true);
+    }
+    private void printTree(Node currPtr, String indent, boolean last) {
+        if (currPtr != null) {
+            System.out.print(indent);
+            if (last) {
+                System.out.print("R----");
+                indent += "   ";
+            } else {
+                System.out.print("L----");
+                indent += "|  ";
+            }
+            System.out.println(currPtr.key);
+            printTree(currPtr.left, indent, false);
+            printTree(currPtr.right, indent, true);
         }
     }
 }
