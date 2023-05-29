@@ -218,8 +218,14 @@ public class AVLTree implements Tree {
     }
 
     public void delete(int item){
-        deleteNode(root, item);
+        if (find(item) != null) {
+            root = deleteNode(root, item);
+        }
+        else {
+            System.out.println("Element doesn't exist.");
+        }
     }
+
     private Node deleteNode(Node root, int item) {
         if (root == null)
             return root;
@@ -245,6 +251,8 @@ public class AVLTree implements Tree {
                 root.right = deleteNode(root.right, temp.key);
             }
         }
+        if (root == null)
+            return root;
         root.height = max(height(root.left), height(root.right)) + 1;
         int balanceFactor = getBalanceFactor(root);
         if (balanceFactor > 1) {
