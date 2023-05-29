@@ -1,10 +1,10 @@
-#menuBar {
+.window {
     -fx-background-color: #292929;
     -fx-background-radius: 10 10 10 10;
     -fx-border-radius: 0 10 10 0;
 }
 
-.menuBarLabels {
+.windowLabels {
     -fx-font-family: "Tahoma";
     -fx-font-size: 11px;
     -fx-text-fill: #d3d3d3;
@@ -12,7 +12,6 @@
 
 .separator .line {
     -fx-background-color: #5d5d5d;
-
     -fx-pref-width: 2;
     -fx-pref-height: 2;
     -fx-border-color: null ;

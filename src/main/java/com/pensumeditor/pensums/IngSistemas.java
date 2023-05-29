@@ -2,8 +2,8 @@ package com.pensumeditor.pensums;
 
 import com.pensumeditor.data.PositionSubject;
 import com.pensumeditor.data.Subject;
+import com.pensumeditor.datastructures.linear.ArrayList;
 
-import java.util.ArrayList;
 
 public class IngSistemas {
     public IngSistemas() {
@@ -53,14 +53,14 @@ public class IngSistemas {
         SubjectArray.add(new PositionSubject(7, 2, new Subject(2025972, "Introducción a la Criptografía y a la Seguridad de la Información", 3, "Infraestructura Computacional, de Comunicaciones y de Información", "Algoritmos", "COMPONENTE DE FUNDAMENTACIÓN") ) );
         SubjectArray.add(new PositionSubject(7, 3, new Subject(2025960, "Computación Visual", 3, "Computación Visual", "Algoritmos", "COMPONENTE DE FUNDAMENTACIÓN") ) );
         SubjectArray.add(new PositionSubject(7, 4, new Subject(1, "Electiva", 3, "Libre elección", "-", "COMPONENTE DE LIBRE ELECCIÓN") ) );
-        SubjectArray.add(new PositionSubject(7, 5, new Subject(1, "Electiva", 2, "Libre elección", "-", "COMPONENTE DE LIBRE ELECCIÓN") ) );
-        SubjectArray.add(new PositionSubject(8, 2, new Subject(1, "Electiva", 4, "Libre elección", "-", "COMPONENTE DE LIBRE ELECCIÓN") ) );
-        SubjectArray.add(new PositionSubject(8, 3, new Subject(1, "Electiva", 4, "Libre elección", "-", "COMPONENTE DE LIBRE ELECCIÓN") ) );
-        SubjectArray.add(new PositionSubject(8, 4, new Subject(1, "Electiva", 4, "Libre elección", "-", "COMPONENTE DE LIBRE ELECCIÓN") ) );
-        SubjectArray.add(new PositionSubject(8, 5, new Subject(1, "Electiva", 4, "Libre elección", "-", "COMPONENTE DE LIBRE ELECCIÓN") ) );
-        SubjectArray.add(new PositionSubject(9, 2, new Subject(1, "Electiva", 4, "Libre elección", "-", "COMPONENTE DE LIBRE ELECCIÓN") ) );
-        SubjectArray.add(new PositionSubject(9, 3, new Subject(1, "Electiva", 4, "Libre elección", "-", "COMPONENTE DE LIBRE ELECCIÓN") ) );
-        SubjectArray.add(new PositionSubject(9, 4, new Subject(1, "Electiva", 4, "Libre elección", "-", "COMPONENTE DE LIBRE ELECCIÓN") ) );
+        SubjectArray.add(new PositionSubject(7, 5, new Subject(2, "Electiva", 2, "Libre elección", "-", "COMPONENTE DE LIBRE ELECCIÓN") ) );
+        SubjectArray.add(new PositionSubject(8, 2, new Subject(3, "Electiva", 4, "Libre elección", "-", "COMPONENTE DE LIBRE ELECCIÓN") ) );
+        SubjectArray.add(new PositionSubject(8, 3, new Subject(4, "Electiva", 4, "Libre elección", "-", "COMPONENTE DE LIBRE ELECCIÓN") ) );
+        SubjectArray.add(new PositionSubject(8, 4, new Subject(5, "Electiva", 4, "Libre elección", "-", "COMPONENTE DE LIBRE ELECCIÓN") ) );
+        SubjectArray.add(new PositionSubject(8, 5, new Subject(6, "Electiva", 4, "Libre elección", "-", "COMPONENTE DE LIBRE ELECCIÓN") ) );
+        SubjectArray.add(new PositionSubject(9, 2, new Subject(7, "Electiva", 4, "Libre elección", "-", "COMPONENTE DE LIBRE ELECCIÓN") ) );
+        SubjectArray.add(new PositionSubject(9, 3, new Subject(8, "Electiva", 4, "Libre elección", "-", "COMPONENTE DE LIBRE ELECCIÓN") ) );
+        SubjectArray.add(new PositionSubject(9, 4, new Subject(9, "Electiva", 4, "Libre elección", "-", "COMPONENTE DE LIBRE ELECCIÓN") ) );
         SubjectArray.add(new PositionSubject(9, 5, new Subject(2025973, "Trabajo de Grado - Práctica de Extensión", 6, "TRABAJO DE GRADO", "Haber aprobado 60 créditos del Componente de Formación Disciplinar o Profesional", "COMPONENTE DE FUNDAMENTACIÓN") ) );
 
         return SubjectArray;

@@ -10,9 +10,8 @@ import java.io.IOException;
 public class App extends Application {
     @Override
     public void start(Stage stage) throws Exception {
-        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("Editor.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 1200, 720);
-        //stage.getIcons().add(new Image(getClass().getResourceAsStream("editor/pensum_editor_icon.png")));
+        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("Editor2.fxml"));
+        Scene scene = new Scene(fxmlLoader.load(), 1280, 720);
         stage.setTitle("Pensum Editor");
         stage.setScene(scene);
         stage.show();

@@ -28,4 +28,6 @@ public class SubjectItemInfo {
     public void setController(SubjectItemController controller) {
         Controller = controller;
     }
+
+
 }

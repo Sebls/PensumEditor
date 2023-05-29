@@ -4,24 +4,92 @@ import com.pensumeditor.data.Subject;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.layout.Background;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 
 public class SubjectItemController {
 
-        @FXML
-        private Label codeLabel;
-        @FXML
-        private Pane colorPane;
-        @FXML
-        private Label creditsLabel;
-        @FXML
-        private Label nameLabel;
+    @FXML
+    private Label codeLabel;
+    @FXML
+    private Pane colorPane;
+    @FXML
+    private Label creditsLabel;
+    @FXML
+    private Label nameLabel;
 
+    public int getSubjectCode() {
+        if (codeLabel.getText().equals("Codigo")) {
+            return 0;
+        }
+        return Integer.parseInt(codeLabel.getText());
+    }
+
+    public void setSubjectColor(String hex) {
+        colorPane.setStyle(colorPane.getStyle() + "-fx-background-color: #" + hex + ";");
+    }
 
     public void setSubjectData(Subject subject) {
         codeLabel.setText(Integer.toString(subject.getCode()));
         creditsLabel.setText(Integer.toString(subject.getCredits()));
         nameLabel.setText(subject.getName());
+        switch(subject.getGroup()) {
+            case "Matemáticas":
+                setSubjectColor("99ccff");
+                break;
+
+            case "Probabilidad y Estadística":
+                setSubjectColor("95b3d7");
+                break;
+
+            case "Física":
+                setSubjectColor("ffffcc");
+                break;
+
+            case "Ciencias de la Computación":
+                setSubjectColor("cccc00");
+                break;
+
+            case "Ciencias Económicas y Administrativas":
+                setSubjectColor("a9d08e");
+                break;
+
+            case "Métodos y Tecnologías de Software":
+                setSubjectColor("fff2cc");
+                break;
+
+            case "Infraestructura Computacional, de Comunicaciones y de Información":
+                setSubjectColor("ffff66");
+                break;
+
+            case "Computación Visual":
+                setSubjectColor("d8e4bc");
+                break;
+
+            case "Sistemas Inteligentes":
+                setSubjectColor("b7dee8");
+                break;
+
+            case "Modelos, Sistemas, Optimización y Simulación":
+                setSubjectColor("99cc00");
+                break;
+
+            case "Contexto Profesional y Proyectos de Ingeniería":
+                setSubjectColor("99ccff");
+                break;
+
+            case "TRABAJO DE GRADO":
+                setSubjectColor("d9e1f2");
+                break;
+
+            case "Libre elección":
+                setSubjectColor("e4e4e4");
+                break;
+
+            default:
+                setSubjectColor("b7dee8");
+        }
     }
 
 }

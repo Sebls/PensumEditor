@@ -14,4 +14,8 @@ public interface List<T> {
     public T remove(int index);
     public void add(T data);
     public String toString();
+
+    public default boolean equalsTo(List<T> list) {
+        return (list.toString()).equals(this.toString());
+    }
 }

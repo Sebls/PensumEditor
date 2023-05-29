@@ -1,11 +1,15 @@
 package com.pensumeditor.data;
 
-import java.util.ArrayList;
+
+import com.pensumeditor.datastructures.linear.ArrayList;
+
+import java.util.Objects;
 
 public class PositionSubject implements Comparable<PositionSubject> {
 
     private Subject subject;
-    private ArrayList<int[]> positions = new ArrayList<>();
+    private int column;
+    private int row;
     private int subjectCode;
 
     public PositionSubject(Subject subject) {
@@ -14,10 +18,8 @@ public class PositionSubject implements Comparable<PositionSubject> {
     }
 
     public PositionSubject(int column, int row, Subject subject) {
-        int[] position = new int[2];
-        position[0] = column;
-        position[1] = row;
-        this.positions.add(position);
+        this.column = column;
+        this.row = row;
         this.subjectCode = subject.getCode();
         this.subject = subject;
     }
@@ -34,24 +36,23 @@ public class PositionSubject implements Comparable<PositionSubject> {
         this.subject = subject;
     }
 
-    public ArrayList<int[]> getPositions() {
-        return positions;
+    public int getColumn() {
+        return column;
     }
 
-    public void addPosition(int column, int row) {
-        int[] position = new int[2];
-        position[0] = column;
-        position[1] = row;
-        positions.add(position);
+    public void setColumn(int column) {
+        this.column = column;
     }
 
-    @Override
-    public String toString() {
-        return "PositionSubject{" +
-                "subject=" + subject +
-                ", positions=" + positions +
-                '}';
+    public int getRow() {
+        return row;
     }
+
+    public void setRow(int row) {
+        this.row = row;
+    }
+
+
 
     @Override
     public boolean equals(Object o) {
