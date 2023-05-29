@@ -20,11 +20,6 @@ public class BinarySearchTree <T extends Comparable<T>> implements Tree <T> {
         public T getKey() {
             return key;
         }
-
-        @Override
-        public String toString() {
-            return key.toString();
-        }
     }
 
     private Node root;
@@ -57,10 +52,10 @@ public class BinarySearchTree <T extends Comparable<T>> implements Tree <T> {
         if (node == null) {
             return new Node(key);
         }
-        if (key.compareTo(node.key) < 0) {
+        if (key.compareTo(node.key)>0) {
             node.right = insert(key, node.right);
             node.right.parent = node;
-        } else if (key.compareTo(node.key) > 0) {
+        } else if (key.compareTo(node.key)<0) {
             node.left = insert(key, node.left);
             node.left.parent = node;
         }
@@ -181,7 +176,7 @@ public class BinarySearchTree <T extends Comparable<T>> implements Tree <T> {
     private List<T> rangeSearch(T x, T y, Node R) {
         List<T> L = new CircularArrayList<>();
         Node N = find(x, R);
-        while (N != null && N.key.compareTo(y) <= 0) {
+        while (N != null && N.key.compareTo(y)<=0) {
             if (N.key.compareTo(x) >= 0) {
                 L.add(N.key);
             }
@@ -191,13 +186,14 @@ public class BinarySearchTree <T extends Comparable<T>> implements Tree <T> {
     }
 
     public void delete(T value) {
-        if (find(value).key == value) {
-            delete(find(value));
-        }
-        else {
+        Node nodeToDelete = find(value);
+        if (nodeToDelete != null && nodeToDelete.key == value) {
+            delete(nodeToDelete);
+        } else {
             System.out.println("Element doesn't exist.");
         }
     }
+
     private void delete(Node N) {
         if (N.right == null) {
             if (N.parent != null) {

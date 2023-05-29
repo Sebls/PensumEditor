@@ -206,7 +206,7 @@ public class AVLTree <T extends Comparable<T>> implements Tree <T> {
         return rangeSearch(x,y,root);
     }
 
-    private List<T> rangeSearch(T x, T y, Node R) { // ARREGLAR
+    private List<T> rangeSearch(T x, T y, Node R) {
         List<T> L = new CircularArrayList<>();
         Node N = find(x, R);
         while (N != null && N.key.compareTo(y) <= 0) {
@@ -256,7 +256,7 @@ public class AVLTree <T extends Comparable<T>> implements Tree <T> {
             return root;
         root.height = max(height(root.left), height(root.right)) + 1;
         int balanceFactor = getBalanceFactor(root);
-        if (balanceFactor > 1) {
+        if (balanceFactor > 0) {
             if (getBalanceFactor(root.left) >= 0) {
                 return rightRotate(root);
             } else {
