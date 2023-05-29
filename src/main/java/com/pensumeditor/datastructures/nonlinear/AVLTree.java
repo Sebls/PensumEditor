@@ -1,5 +1,6 @@
 package com.pensumeditor.datastructures.nonlinear;
 
+import com.pensumeditor.datastructures.linear.ArrayList;
 import com.pensumeditor.datastructures.linear.CircularArrayList;
 import com.pensumeditor.datastructures.linear.List;
 
@@ -273,6 +274,20 @@ public class AVLTree <T extends Comparable<T>> implements Tree <T> {
             }
         }
         return root;
+    }
+
+    ArrayList<T> iterable;
+    public ArrayList<T> preOrderIterable() {
+        iterable = new ArrayList<>();
+        preOrderIterable(root);
+        return iterable;
+    }
+    public void preOrderIterable(Node node) {
+        if (node != null) {
+            iterable.add(node.key);
+            preOrderIterable(node.left);
+            preOrderIterable(node.right);
+        }
     }
 
     public void preOrderTraversal(){
