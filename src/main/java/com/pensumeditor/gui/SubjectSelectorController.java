@@ -4,6 +4,7 @@ import com.pensumeditor.data.PositionSubject;
 import com.pensumeditor.data.Subject;
 import com.pensumeditor.datastructures.linear.ArrayList;
 
+import com.pensumeditor.datastructures.nonlinear.AVLTree;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.fxml.FXML;
@@ -39,10 +40,10 @@ public class SubjectSelectorController implements Initializable {
     public Object selectedSubject;
     public int[] position;
 
-    private ArrayList<PositionSubject> SubjectsArray;
+    private AVLTree<PositionSubject> SubjectsArray;
     private int semesterNumber;
 
-    public void loadSubjectsArray(ArrayList<PositionSubject> SubjectsArray, int semesterNumber) {
+    public void loadSubjectsArray(AVLTree<PositionSubject> SubjectsArray, int semesterNumber) {
         this.SubjectsArray = SubjectsArray;
         this.semesterNumber = semesterNumber;
     }

@@ -3,6 +3,7 @@ package com.pensumeditor.gui;
 import com.pensumeditor.data.PositionSubject;
 import com.pensumeditor.datastructures.linear.ArrayList;
 
+import com.pensumeditor.datastructures.nonlinear.AVLTree;
 import javafx.fxml.FXML;
 import javafx.scene.Cursor;
 import javafx.scene.layout.ColumnConstraints;
@@ -16,11 +17,11 @@ public class PositionSelectorController {
     @FXML
     private GridPane gridPane;
 
-    private ArrayList<PositionSubject> SubjectsArray;
+    private AVLTree<PositionSubject> SubjectsArray;
     private int semesterNumber;
     private int[] position;
 
-    public void loadSubjectsArray(ArrayList<PositionSubject> SubjectsArray, int semesterNumber) {
+    public void loadSubjectsArray(AVLTree<PositionSubject> SubjectsArray, int semesterNumber) {
         this.SubjectsArray = SubjectsArray;
         this.semesterNumber = semesterNumber;
     }
@@ -35,8 +36,9 @@ public class PositionSelectorController {
             matrix.add(new int[6]);
         }
 
-        for (int i = 0; i < SubjectsArray.getSize(); i++) {
-            PositionSubject positionSubject = SubjectsArray.get(i);
+        ArrayList<PositionSubject> iterable = SubjectsArray.preOrderIterable();
+        for (int i = 0; i < iterable.getSize(); i++) {
+            PositionSubject positionSubject = iterable.get(i);
             matrix.get(positionSubject.getColumn())[positionSubject.getRow()] = 1;
         }
 

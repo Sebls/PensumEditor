@@ -4,6 +4,7 @@ import com.pensumeditor.data.PositionSubject;
 import com.pensumeditor.data.Subject;
 import com.pensumeditor.data.SubjectItemInfo;
 import com.pensumeditor.datastructures.linear.ArrayList;
+import com.pensumeditor.datastructures.nonlinear.AVLTree;
 import com.pensumeditor.pensums.IngSistemas;
 
 import javafx.event.EventHandler;
@@ -16,7 +17,6 @@ import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -30,7 +30,7 @@ public class EditorController implements Initializable {
     // Variables globales
     private int semesterNumber;
     private int semesterSubjects;
-    private ArrayList<PositionSubject> SubjectArray;
+    private AVLTree<PositionSubject> SubjectArray;
 
     private ArrayList<SubjectItemInfo[]> SubjectItemMatrix;
 
@@ -66,8 +66,9 @@ public class EditorController implements Initializable {
     public void updateSubjects() {
         PensumPane.getChildren().clear();
         int SubjectNumber = 0;
-        for(int i=0; i<SubjectArray.getSize(); i++) {
-            PositionSubject positionSubject = SubjectArray.get(i);
+        ArrayList<PositionSubject> iterable = SubjectArray.preOrderIterable();
+        for(int i=0; i<iterable.getSize(); i++) {
+            PositionSubject positionSubject = iterable.get(i);
             int position_x = positionSubject.getColumn();
             int position_y = positionSubject.getRow();
             if (position_x < semesterNumber && position_y < semesterSubjects) {
@@ -128,26 +129,28 @@ public class EditorController implements Initializable {
         Pane pane = (Pane) event.getSource();
         Label codeLabel = (Label) ((Pane) pane.getChildren().get(1)).getChildren().get(0);
         int code = Integer.parseInt(codeLabel.getText());
-        PositionSubject subject = SubjectArray.get(SubjectArray.search(new PositionSubject(code)));
-        //int position_x = (int) Math.round((pane.getLayoutX()-20)/distance_x);
-        //int position_y = (int) Math.round((pane.getLayoutY()-20)/distance_y);
-        // Option:
-        // 0 = Show info
-        // 1 = Delete Subject
-        switch (option) {
-            case 0:
-                displayInfo(subject);
-                break;
-            case 1:
-                deleteSubject(subject);
-                option = 0;
-                break;
-            case 2:
-                try {
-                    replaceSubject(subject);
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
+        PositionSubject subject = SubjectArray.search(new PositionSubject(code));
+        if (subject.equals(new PositionSubject(code))) {
+            //int position_x = (int) Math.round((pane.getLayoutX()-20)/distance_x);
+            //int position_y = (int) Math.round((pane.getLayoutY()-20)/distance_y);
+            // Option:
+            // 0 = Show info
+            // 1 = Delete Subject
+            switch (option) {
+                case 0:
+                    displayInfo(subject);
+                    break;
+                case 1:
+                    deleteSubject(subject);
+                    option = 0;
+                    break;
+                case 2:
+                    try {
+                        replaceSubject(subject);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+            }
         }
     };
 
@@ -183,7 +186,7 @@ public class EditorController implements Initializable {
         Subject subject = (Subject) ssc.getSelectedSubject();
         int[] position = ssc.getPosition();
 
-        SubjectArray.add(new PositionSubject(position[0], position[1], subject));
+        SubjectArray.insert(new PositionSubject(position[0], position[1], subject));
 
         updateSubjects();
     }
@@ -221,10 +224,7 @@ public class EditorController implements Initializable {
         SubjectItemInfo[] SubjectItems = SubjectItemMatrix.popBack();
         for (SubjectItemInfo subjectItemInfo : SubjectItems) {
             int code = subjectItemInfo.getController().getSubjectCode();
-            int index = SubjectArray.search(new PositionSubject(code));
-            if (index != -1){
-                SubjectArray.remove(index);
-            }
+            SubjectArray.delete(new PositionSubject(code));
         }
         updateSubjects();
         SemesterBar.getChildren().remove(semesterNumber);
@@ -257,8 +257,7 @@ public class EditorController implements Initializable {
     }
 
     public void deleteSubject(PositionSubject positionSubject) {
-        int index = SubjectArray.search(positionSubject);
-        SubjectArray.remove(index);
+        SubjectArray.delete(positionSubject);
         updateSubjects();
         MenuPane.setVisible(true);
     }
