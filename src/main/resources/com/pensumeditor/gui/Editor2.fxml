@@ -127,9 +127,9 @@
                   </VBox>
                </content>
             </ScrollPane>
-            <AnchorPane fx:id="InfoPane" layoutX="20.0" layoutY="20.0" prefHeight="257.0" prefWidth="250.0" styleClass="window" stylesheets="@styles/Editor.css">
+            <AnchorPane fx:id="InfoPane" layoutX="1000.0" layoutY="300.0" prefHeight="257.0" prefWidth="250.0" style="-fx-background-radius: 10; -fx-border-color: #888885; -fx-border-radius: 10;" styleClass="background" stylesheets="@styles/Editor.css" AnchorPane.bottomAnchor="30.0" AnchorPane.rightAnchor="30.0">
                <children>
-                  <Label alignment="CENTER" layoutY="5.0" prefHeight="25.0" prefWidth="250.0" style="-fx-font-size: 13px;" styleClass="windowLabels" stylesheets="@styles/Editor.css" text="Información Asignatura" />
+                  <Label alignment="CENTER" layoutY="5.0" prefHeight="25.0" prefWidth="250.0" style="-fx-font-size: 13px;" stylesheets="@styles/Editor.css" text="Información Asignatura" />
                   <ImageView fitHeight="25.0" fitWidth="16.0" layoutX="228.0" layoutY="8.0" onMouseClicked="#occultWindow" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@editor/close.png" />
@@ -138,12 +138,12 @@
                         <Cursor fx:constant="HAND" />
                      </cursor>
                   </ImageView>
-                  <Label fx:id="InfoNameLabel" alignment="TOP_LEFT" layoutX="10.0" layoutY="37.0" prefHeight="25.0" prefWidth="230.0" styleClass="windowLabels" stylesheets="@styles/Editor.css" text="Nombre:" />
-                  <Label fx:id="InfoCodeLabel" alignment="TOP_LEFT" layoutX="10.0" layoutY="64.0" prefHeight="25.0" prefWidth="134.0" styleClass="windowLabels" stylesheets="@styles/Editor.css" text="Código:" />
-                  <Label fx:id="InfoCreditsLabel" alignment="TOP_LEFT" layoutX="125.0" layoutY="64.0" prefHeight="25.0" prefWidth="111.0" styleClass="windowLabels" stylesheets="@styles/Editor.css" text="Creditos:" />
-                  <Label fx:id="InfoGroupLabel" alignment="TOP_LEFT" layoutX="10.0" layoutY="91.0" prefHeight="47.0" prefWidth="230.0" styleClass="windowLabels" stylesheets="@styles/Editor.css" text="Grupo:" wrapText="true" />
-                  <Label fx:id="InfoComponentLabel" alignment="TOP_LEFT" layoutX="10.0" layoutY="138.0" prefHeight="54.0" prefWidth="230.0" styleClass="windowLabels" stylesheets="@styles/Editor.css" text="Componente:" wrapText="true" />
-                  <Label fx:id="InfoPrerequisiteLabel" alignment="TOP_LEFT" layoutX="10.0" layoutY="194.0" prefHeight="55.0" prefWidth="230.0" styleClass="windowLabels" stylesheets="@styles/Editor.css" text="Prerequisitos:" wrapText="true" />
+                  <Label fx:id="InfoNameLabel" alignment="TOP_LEFT" layoutX="10.0" layoutY="37.0" prefHeight="25.0" prefWidth="230.0" stylesheets="@styles/Editor.css" text="Nombre:" />
+                  <Label fx:id="InfoCodeLabel" alignment="TOP_LEFT" layoutX="10.0" layoutY="64.0" prefHeight="25.0" prefWidth="134.0" stylesheets="@styles/Editor.css" text="Código:" />
+                  <Label fx:id="InfoCreditsLabel" alignment="TOP_LEFT" layoutX="125.0" layoutY="64.0" prefHeight="25.0" prefWidth="111.0" stylesheets="@styles/Editor.css" text="Creditos:" />
+                  <Label fx:id="InfoGroupLabel" alignment="TOP_LEFT" layoutX="10.0" layoutY="91.0" prefHeight="47.0" prefWidth="230.0" stylesheets="@styles/Editor.css" text="Grupo:" wrapText="true" />
+                  <Label fx:id="InfoComponentLabel" alignment="TOP_LEFT" layoutX="10.0" layoutY="138.0" prefHeight="54.0" prefWidth="230.0" stylesheets="@styles/Editor.css" text="Componente:" wrapText="true" />
+                  <Label fx:id="InfoPrerequisiteLabel" alignment="TOP_LEFT" layoutX="10.0" layoutY="194.0" prefHeight="55.0" prefWidth="230.0" stylesheets="@styles/Editor.css" text="Prerequisitos:" wrapText="true" />
                </children>
             </AnchorPane>
          </children>
