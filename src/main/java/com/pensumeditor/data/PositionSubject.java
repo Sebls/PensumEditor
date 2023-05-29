@@ -52,7 +52,14 @@ public class PositionSubject implements Comparable<PositionSubject> {
         this.row = row;
     }
 
-
+    @Override
+    public String toString() {
+        return "PositionSubject{" +
+                "subject=" + subject +
+                ", column=" + column +
+                ", row=" + row +
+                '}';
+    }
 
     @Override
     public boolean equals(Object o) {

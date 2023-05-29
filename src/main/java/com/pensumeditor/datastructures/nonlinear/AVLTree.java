@@ -133,7 +133,7 @@ public class AVLTree <T extends Comparable<T>> implements Tree <T> {
 
     private Node find(T value, Node node) {
         if (node != null) {
-            if (node.key == value) {
+            if (node.key.equals(value)) {
                 return node;
             } else if (node.key.compareTo(value) > 0) {
                 if (node.left != null) {

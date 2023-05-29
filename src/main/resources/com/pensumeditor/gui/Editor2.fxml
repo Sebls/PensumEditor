@@ -8,117 +8,116 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" styleClass="background" stylesheets="@styles/Editor.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.pensumeditor.gui.EditorController">
    <children>
-      <AnchorPane prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+      <VBox fx:id="MenuPane" prefHeight="95.0" prefWidth="728.0" styleClass="background" stylesheets="@styles/Editor.css">
          <children>
-            <VBox fx:id="MenuPane" layoutX="1202.0" prefHeight="450.0" prefWidth="65.0" spacing="5.0" styleClass="window" stylesheets="@styles/Editor.css" AnchorPane.rightAnchor="0.0">
+            <HBox prefHeight="29.0" prefWidth="728.0">
                <children>
-                  <Label alignment="CENTER" prefHeight="25.0" prefWidth="65.0" styleClass="windowLabels" stylesheets="@styles/Editor.css" text="Asignaturas">
-                     <VBox.margin>
-                        <Insets top="10.0" />
-                     </VBox.margin>
-                  </Label>
-                  <ImageView fitHeight="40.0" fitWidth="40.0" onMouseClicked="#setReplaceOption" pickOnBounds="true" preserveRatio="true" styleClass="iconMenu">
+                  <Label alignment="CENTER" prefHeight="26.0" prefWidth="261.0" stylesheets="@styles/Editor.css" text="Asignaturas" />
+                  <Label alignment="CENTER" prefHeight="26.0" prefWidth="183.0" stylesheets="@styles/Editor.css" text="Semestres" />
+                  <Label alignment="CENTER" prefHeight="26.0" prefWidth="260.0" stylesheets="@styles/Editor.css" text="Estilos" />
+                  <Label alignment="CENTER" prefHeight="26.0" prefWidth="172.0" stylesheets="@styles/Editor.css" text="Exportar" />
+               </children>
+            </HBox>
+            <HBox prefHeight="63.0" prefWidth="742.0" spacing="20.0">
+               <children>
+                  <ImageView fitHeight="60.0" fitWidth="60.0" onMouseClicked="#setReplaceOption" pickOnBounds="true" preserveRatio="true" styleClass="iconMenu">
                      <image>
                         <Image url="@editor/edit_subject.png" />
                      </image>
                      <cursor>
                         <Cursor fx:constant="OPEN_HAND" />
                      </cursor>
-                     <VBox.margin>
-                        <Insets left="10.0" />
-                     </VBox.margin>
                   </ImageView>
-                  <ImageView fitHeight="40.0" fitWidth="40.0" onMouseClicked="#addSubject" pickOnBounds="true" preserveRatio="true" styleClass="iconMenu">
+                  <ImageView fitHeight="60.0" fitWidth="60.0" onMouseClicked="#addSubject" pickOnBounds="true" preserveRatio="true" styleClass="iconMenu">
                      <image>
                         <Image url="@editor/add_subject.png" />
                      </image>
                      <cursor>
                         <Cursor fx:constant="OPEN_HAND" />
                      </cursor>
-                     <VBox.margin>
-                        <Insets left="10.0" />
-                     </VBox.margin>
                   </ImageView>
-                  <ImageView fitHeight="40.0" fitWidth="40.0" onMouseClicked="#setDeleteOption" pickOnBounds="true" preserveRatio="true" styleClass="iconMenu">
+                  <ImageView fitHeight="60.0" fitWidth="60.0" onMouseClicked="#setDeleteOption" pickOnBounds="true" preserveRatio="true" styleClass="iconMenu">
                      <image>
                         <Image url="@editor/remove_subject.png" />
                      </image>
                      <cursor>
                         <Cursor fx:constant="OPEN_HAND" />
                      </cursor>
-                     <VBox.margin>
-                        <Insets left="10.0" />
-                     </VBox.margin>
                   </ImageView>
-                  <Separator prefHeight="0.0" prefWidth="66.0" stylesheets="@styles/Editor.css">
-                     <VBox.margin>
-                        <Insets left="10.0" right="10.0" />
-                     </VBox.margin>
-                     <padding>
-                        <Insets top="5.0" />
-                     </padding>
-                  </Separator>
-                  <Label alignment="CENTER" prefHeight="25.0" prefWidth="65.0" styleClass="windowLabels" stylesheets="@styles/Editor.css" text="Semestres" />
-                  <ImageView fitHeight="40.0" fitWidth="40.0" onMouseClicked="#addSemester" pickOnBounds="true" preserveRatio="true" styleClass="iconMenu">
+                  <Separator orientation="VERTICAL" prefHeight="200.0" stylesheets="@styles/Editor.css" />
+                  <ImageView fitHeight="60.0" fitWidth="60.0" onMouseClicked="#addSemester" pickOnBounds="true" preserveRatio="true" styleClass="iconMenu">
                      <image>
                         <Image url="@editor/add_semester.png" />
                      </image>
                      <cursor>
                         <Cursor fx:constant="OPEN_HAND" />
                      </cursor>
-                     <VBox.margin>
-                        <Insets left="10.0" />
-                     </VBox.margin>
                   </ImageView>
-                  <ImageView fitHeight="40.0" fitWidth="40.0" onMouseClicked="#removeSemester" pickOnBounds="true" preserveRatio="true" styleClass="iconMenu">
+                  <ImageView fitHeight="60.0" fitWidth="60.0" onMouseClicked="#removeSemester" pickOnBounds="true" preserveRatio="true" styleClass="iconMenu">
                      <image>
                         <Image url="@editor/remove_semester.png" />
                      </image>
                      <cursor>
                         <Cursor fx:constant="OPEN_HAND" />
                      </cursor>
-                     <VBox.margin>
-                        <Insets left="10.0" />
-                     </VBox.margin>
                   </ImageView>
-                  <Separator prefWidth="100.0" stylesheets="@styles/Editor.css">
-                     <padding>
-                        <Insets top="5.0" />
-                     </padding>
-                     <VBox.margin>
-                        <Insets left="10.0" right="10.0" />
-                     </VBox.margin>
-                  </Separator>
-                  <Label alignment="CENTER" prefHeight="25.0" prefWidth="65.0" styleClass="windowLabels" stylesheets="@styles/Editor.css" text="Estilos" />
-                  <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" styleClass="iconMenu">
+                  <Separator orientation="VERTICAL" prefHeight="200.0" stylesheets="@styles/Editor.css" />
+                  <ImageView disable="true" fitHeight="60.0" fitWidth="60.0" opacity="0.47" pickOnBounds="true" preserveRatio="true" styleClass="iconMenu">
                      <image>
                         <Image url="@editor/edit_background.png" />
                      </image>
                      <cursor>
                         <Cursor fx:constant="OPEN_HAND" />
                      </cursor>
-                     <VBox.margin>
-                        <Insets left="10.0" />
-                     </VBox.margin>
                   </ImageView>
-                  <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" styleClass="iconMenu">
+                  <ImageView disable="true" fitHeight="60.0" fitWidth="60.0" opacity="0.47" pickOnBounds="true" preserveRatio="true" styleClass="iconMenu">
+                     <image>
+                        <Image url="@editor/edit_style.png" />
+                     </image>
+                     <cursor>
+                        <Cursor fx:constant="OPEN_HAND" />
+                     </cursor>
+                  </ImageView>
+                  <ImageView disable="true" fitHeight="60.0" fitWidth="60.0" opacity="0.47" pickOnBounds="true" preserveRatio="true" styleClass="iconMenu">
                      <image>
                         <Image url="@editor/edit_group_color.png" />
                      </image>
                      <cursor>
                         <Cursor fx:constant="OPEN_HAND" />
                      </cursor>
-                     <VBox.margin>
-                        <Insets left="10.0" />
-                     </VBox.margin>
+                  </ImageView>
+                  <Separator orientation="VERTICAL" prefHeight="200.0" stylesheets="@styles/Editor.css" />
+                  <ImageView disable="true" fitHeight="60.0" fitWidth="60.0" opacity="0.47" pickOnBounds="true" preserveRatio="true" styleClass="iconMenu">
+                     <image>
+                        <Image url="@editor/pdf_export.png" />
+                     </image>
+                     <cursor>
+                        <Cursor fx:constant="OPEN_HAND" />
+                     </cursor>
+                  </ImageView>
+                  <ImageView disable="true" fitHeight="60.0" fitWidth="60.0" opacity="0.47" pickOnBounds="true" preserveRatio="true" styleClass="iconMenu">
+                     <image>
+                        <Image url="@editor/png_export.png" />
+                     </image>
+                     <cursor>
+                        <Cursor fx:constant="OPEN_HAND" />
+                     </cursor>
                   </ImageView>
                </children>
-            </VBox>
-            <ScrollPane prefHeight="720.0" prefWidth="1215.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="65.0" AnchorPane.topAnchor="0.0">
+               <VBox.margin>
+                  <Insets bottom="10.0" left="20.0" right="20.0" />
+               </VBox.margin>
+            </HBox>
+         </children>
+      </VBox>
+      <AnchorPane prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+         <children>
+            <ScrollPane prefHeight="720.0" prefWidth="1215.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <content>
                   <VBox fx:id="PaneScroll" prefHeight="850.0" prefWidth="3000.0">
                      <children>

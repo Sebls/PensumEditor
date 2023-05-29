@@ -2,8 +2,8 @@ package com.pensumeditor.gui;
 
 import com.pensumeditor.data.PositionSubject;
 import com.pensumeditor.datastructures.linear.ArrayList;
-
 import com.pensumeditor.datastructures.nonlinear.AVLTree;
+
 import javafx.fxml.FXML;
 import javafx.scene.Cursor;
 import javafx.scene.layout.ColumnConstraints;

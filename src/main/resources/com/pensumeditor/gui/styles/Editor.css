@@ -5,8 +5,6 @@
 }
 
 .windowLabels {
-    -fx-font-family: "Tahoma";
-    -fx-font-size: 11px;
     -fx-text-fill: #d3d3d3;
 }
 

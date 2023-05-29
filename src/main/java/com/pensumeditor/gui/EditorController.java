@@ -71,9 +71,10 @@ public class EditorController implements Initializable {
             PositionSubject positionSubject = iterable.get(i);
             int position_x = positionSubject.getColumn();
             int position_y = positionSubject.getRow();
-            if (position_x < semesterNumber && position_y < semesterSubjects) {
-                Pane SubjectItem = SubjectItemMatrix.get(position_x)[position_y].getSubjectItem();
-                SubjectItemController Controller = SubjectItemMatrix.get(position_x)[position_y].getController();
+            //if (position_x < semesterNumber && position_y < semesterSubjects) {
+            Pane SubjectItem = SubjectItemMatrix.get(position_x)[position_y].getSubjectItem();
+            SubjectItemController Controller = SubjectItemMatrix.get(position_x)[position_y].getController();
+            try {
                 PensumPane.getChildren().add(SubjectItem);
                 SubjectItem.addEventHandler(MouseEvent.MOUSE_CLICKED, onSubjectClicked);
                 SubjectItem = (Pane) PensumPane.getChildren().get(SubjectNumber);
@@ -82,7 +83,10 @@ public class EditorController implements Initializable {
                 SubjectItem.setLayoutY(distance_y * position_y + 20);
                 Controller.setSubjectData(positionSubject.getSubject());
                 SubjectNumber++;
+            } catch (Exception e) {
+
             }
+            //}
         }
     }
 
@@ -130,28 +134,29 @@ public class EditorController implements Initializable {
         Label codeLabel = (Label) ((Pane) pane.getChildren().get(1)).getChildren().get(0);
         int code = Integer.parseInt(codeLabel.getText());
         PositionSubject subject = SubjectArray.search(new PositionSubject(code));
-        if (subject.equals(new PositionSubject(code))) {
+        //if (subject.equals(new PositionSubject(code))) {
             //int position_x = (int) Math.round((pane.getLayoutX()-20)/distance_x);
             //int position_y = (int) Math.round((pane.getLayoutY()-20)/distance_y);
             // Option:
             // 0 = Show info
             // 1 = Delete Subject
-            switch (option) {
-                case 0:
-                    displayInfo(subject);
-                    break;
-                case 1:
-                    deleteSubject(subject);
-                    option = 0;
-                    break;
-                case 2:
-                    try {
-                        replaceSubject(subject);
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
-            }
+            // 2 = Replace Subject
+        switch (option) {
+            case 0:
+                displayInfo(subject);
+                break;
+            case 1:
+                deleteSubject(subject);
+                option = 0;
+                break;
+            case 2:
+                try {
+                    replaceSubject(subject);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
         }
+        //}
     };
 
     @FXML
@@ -275,7 +280,9 @@ public class EditorController implements Initializable {
         stage.showAndWait();
 
         Subject subject = (Subject) ssc.getSelectedSubject();
-        positionSubject.setSubject(subject);
+        int position_x = positionSubject.getColumn(), position_y = positionSubject.getRow();
+        SubjectArray.delete(positionSubject);
+        SubjectArray.insert(new PositionSubject(position_x, position_y, subject));
 
         updateSubjects();
         MenuPane.setVisible(true);
