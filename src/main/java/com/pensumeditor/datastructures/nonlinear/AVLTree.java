@@ -5,21 +5,22 @@ import com.pensumeditor.datastructures.linear.List;
 
 import java.util.NoSuchElementException;
 
-public class AVLTree implements Tree {
+public class AVLTree <T extends Comparable<T>> implements Tree <T> {
     public class Node {
-        private int key, height;
+        private T key;
+        private int height;
         private Node left, right, parent;
-        public Node(int key) {
+        public Node(T key) {
             this.key = key;
             this.left = this.right = this.parent = null;
             height = 1;
         }
-        public int getKey() {
+        public T getKey() {
             return key;
         }
     }
     private Node root;
-    public AVLTree(int key) {
+    public AVLTree(T key) {
         root = new Node(key);
     }
     public AVLTree() {
@@ -84,18 +85,18 @@ public class AVLTree implements Tree {
         return height(N.left) - height(N.right);
     }
 
-    public void insert(int key) {
+    public void insert(T key) {
         root = insertNode(root, key);
     }
 
-    private Node insertNode(Node node, int item) {
+    private Node insertNode(Node node, T item) {
 
         // Find the position and insert the node
         if (node == null)
             return (new Node(item));
-        if (item < node.key)
+        if (item.compareTo(node.key) < 0)
             node.left = insertNode(node.left, item);
-        else if (item > node.key)
+        else if (item.compareTo(node.key) > 0)
             node.right = insertNode(node.right, item);
         else
             return node;
@@ -105,35 +106,35 @@ public class AVLTree implements Tree {
         node.height = 1 + max(height(node.left), height(node.right));
         int balanceFactor = getBalanceFactor(node);
         if (balanceFactor > 1) {
-            if (item < node.left.key) {
+            if (item.compareTo(node.left.key) < 0) {
                 return rightRotate(node);
-            } else if (item > node.left.key) {
+            } else if (item.compareTo(node.left.key) > 0) {
                 node.left = leftRotate(node.left);
                 return rightRotate(node);
             }
         }
         if (balanceFactor < -1) {
-            if (item > node.right.key) {
+            if (item.compareTo(node.right.key) > 0) {
                 return leftRotate(node);
-            } else if (item < node.right.key) {
+            } else if (item.compareTo(node.right.key) < 0) {
                 node.right = rightRotate(node.right);
                 return leftRotate(node);
             }
         }
         return node;
     }
-    public int search(int key) {
+    public T search(T key) {
         return find(key).key;
     }
-    public Node find(int value) {
+    public Node find(T value) {
         return find(value, root);
     }
 
-    private Node find(int value, Node node) {
+    private Node find(T value, Node node) {
         if (node != null) {
             if (node.key == value) {
                 return node;
-            } else if (node.key > value) {
+            } else if (node.key.compareTo(value) > 0) {
                 if (node.left != null) {
                     return find(value, node.left);
                 }
@@ -147,7 +148,7 @@ public class AVLTree implements Tree {
         }
         return null;
     }
-    public int findMin(){
+    public T findMin(){
         return findMin(root).key;
     }
 
@@ -160,7 +161,7 @@ public class AVLTree implements Tree {
             current = current.left;
         return current;
     }
-    public int findMax() {
+    public T findMax() {
         return findMax(root).key;
     }
     private Node findMax(Node node) {
@@ -192,7 +193,7 @@ public class AVLTree implements Tree {
 
     private Node RightAncestor(Node node) {
         if (node != null) {
-            if (node.parent != null && node.key < node.parent.key) {
+            if (node.parent != null && node.key.compareTo(node.parent.key) < 0) {
                 return node.parent;
             } else {
                 return RightAncestor(node.parent);
@@ -201,15 +202,15 @@ public class AVLTree implements Tree {
         return null;
     }
 
-    public List<Integer> rangeSearch(int x, int y) {
+    public List<T> rangeSearch(T x, T y) {
         return rangeSearch(x,y,root);
     }
 
-    private List<Integer> rangeSearch(int x, int y, Node R) { // ARREGLAR
-        List<Integer> L = new CircularArrayList<>();
+    private List<T> rangeSearch(T x, T y, Node R) { // ARREGLAR
+        List<T> L = new CircularArrayList<>();
         Node N = find(x, R);
-        while (N != null && N.key <= y) {
-            if (N.key >= x) {
+        while (N != null && N.key.compareTo(y) <= 0) {
+            if (N.key.compareTo(x) >= 0) {
                 L.add(N.key);
             }
             N = next(N);
@@ -217,7 +218,7 @@ public class AVLTree implements Tree {
         return L;
     }
 
-    public void delete(int item){
+    public void delete(T item){
         if (find(item) != null) {
             root = deleteNode(root, item);
         }
@@ -226,12 +227,12 @@ public class AVLTree implements Tree {
         }
     }
 
-    private Node deleteNode(Node root, int item) {
+    private Node deleteNode(Node root, T item) {
         if (root == null)
             return root;
-        if (item < root.key)
+        if (item.compareTo(root.key) < 0)
             root.left = deleteNode(root.left, item);
-        else if (item > root.key)
+        else if (item.compareTo(root.key) > 0)
             root.right = deleteNode(root.right, item);
         else {
             if ((root.left == null) || (root.right == null)) {

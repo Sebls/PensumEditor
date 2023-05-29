@@ -3,7 +3,7 @@ package com.pensumeditor.data;
 import java.io.Serializable;
 import java.util.Objects;
 
-public class Subject implements Serializable {
+public class Subject implements Serializable, Comparable<Subject> {
 
     private int code;
     private String name;
@@ -99,5 +99,11 @@ public class Subject implements Serializable {
         if (!(o instanceof Subject)) return false;
         Subject subject = (Subject) o;
         return code == subject.code;
+    }
+
+    @Override
+    public int compareTo(Subject o) {
+        Integer code = this.code;
+        return code.compareTo((Integer) o.getCode());
     }
 }

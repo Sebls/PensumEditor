@@ -2,13 +2,13 @@ package com.pensumeditor.datastructures.nonlinear;
 
 import com.pensumeditor.datastructures.linear.List;
 
-public interface Tree {
-    public void insert(int key);
-    public void delete(int key);
-    public int search(int key);
-    public int findMax();
-    public int findMin();
-    public List<Integer> rangeSearch(int a, int b);
+public interface Tree <T extends Comparable<T>> {
+    public void insert(T key);
+    public void delete(T key);
+    public T search(T key);
+    public T findMax();
+    public T findMin();
+    public List<T> rangeSearch(T a, T b);
     public void inOrderTraversal();
     public void preOrderTraversal();
     public void postOrderTraversal();

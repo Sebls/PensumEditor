@@ -5,31 +5,31 @@ import com.pensumeditor.datastructures.linear.List;
 
 import java.nio.BufferUnderflowException;
 
-public class BinarySearchTree implements Tree {
+public class BinarySearchTree <T extends Comparable<T>> implements Tree <T> {
     public class Node {
-        private int key;
+        private T key;
         private Node left;
         private Node right;
         private Node parent;
 
-        public Node(int key) {
+        public Node(T key) {
             this.key = key;
             this.left = this.right = this.parent = null;
         }
 
-        public int getKey() {
+        public T getKey() {
             return key;
         }
 
         @Override
         public String toString() {
-            return Integer.toString(key);
+            return key.toString();
         }
     }
 
     private Node root;
 
-    public BinarySearchTree(int key) {
+    public BinarySearchTree(T key) {
         root = new Node(key);
     }
 
@@ -49,37 +49,37 @@ public class BinarySearchTree implements Tree {
         return root == null;
     }
 
-    public void insert(int key) {
+    public void insert(T key) {
         root = insert(key, root);
     }
 
-    private Node insert(int key, Node node) {
+    private Node insert(T key, Node node) {
         if (node == null) {
             return new Node(key);
         }
-        if (key > node.key) {
+        if (key.compareTo(node.key) < 0) {
             node.right = insert(key, node.right);
             node.right.parent = node;
-        } else if (key < node.key) {
+        } else if (key.compareTo(node.key) > 0) {
             node.left = insert(key, node.left);
             node.left.parent = node;
         }
         return node;
     }
 
-    public int search(int key) {
+    public T search(T key) {
         return find(key).key;
     }
 
-    public Node find(int value) {
+    public Node find(T value) {
         return find(value, root);
     }
 
-    private Node find(int value, Node node) {
+    private Node find(T value, Node node) {
         if (node != null) {
             if (node.key == value) {
                 return node;
-            } else if (node.key > value) {
+            } else if (node.key.compareTo(value) > 0) {
                 if (node.left != null) {
                     return find(value, node.left);
                 }
@@ -94,7 +94,7 @@ public class BinarySearchTree implements Tree {
         return null;
     }
 
-    public int findMin(){
+    public T findMin(){
         if (isEmpty()){
             throw new BufferUnderflowException();
         }
@@ -110,7 +110,7 @@ public class BinarySearchTree implements Tree {
         return findMin(node.left);
     }
 
-    public int findMax() {
+    public T findMax() {
         if (isEmpty()) {
             throw new BufferUnderflowException();
         }
@@ -165,7 +165,7 @@ public class BinarySearchTree implements Tree {
 
     private Node RightAncestor(Node node) {
         if (node != null) {
-            if (node.parent != null && node.key < node.parent.key) {
+            if (node.parent != null && node.key.compareTo(node.parent.key) < 0) {
                 return node.parent;
             } else {
                 return RightAncestor(node.parent);
@@ -174,15 +174,15 @@ public class BinarySearchTree implements Tree {
         return null;
     }
 
-    public List<Integer> rangeSearch(int x, int y) {
+    public List<T> rangeSearch(T x, T y) {
         return rangeSearch(x,y,root);
     }
 
-    private List<Integer> rangeSearch(int x, int y, Node R) {
-        List<Integer> L = new CircularArrayList<>();
+    private List<T> rangeSearch(T x, T y, Node R) {
+        List<T> L = new CircularArrayList<>();
         Node N = find(x, R);
-        while (N != null && N.key <= y) {
-            if (N.key >= x) {
+        while (N != null && N.key.compareTo(y) <= 0) {
+            if (N.key.compareTo(x) >= 0) {
                 L.add(N.key);
             }
             N = next(N);
@@ -190,7 +190,7 @@ public class BinarySearchTree implements Tree {
         return L;
     }
 
-    public void delete(int value) {
+    public void delete(T value) {
         if (find(value).key == value) {
             delete(find(value));
         }
