@@ -17,12 +17,12 @@ public class PositionSelectorController {
     @FXML
     private GridPane gridPane;
 
-    private AVLTree<PositionSubject> SubjectsArray;
+    private AVLTree<PositionSubject> SubjectTree;
     private int semesterNumber;
     private int[] position;
 
-    public void loadSubjectsArray(AVLTree<PositionSubject> SubjectsArray, int semesterNumber) {
-        this.SubjectsArray = SubjectsArray;
+    public void loadSubjectTree(AVLTree<PositionSubject> SubjectTree, int semesterNumber) {
+        this.SubjectTree = SubjectTree;
         this.semesterNumber = semesterNumber;
     }
 
@@ -36,10 +36,14 @@ public class PositionSelectorController {
             matrix.add(new int[6]);
         }
 
-        ArrayList<PositionSubject> iterable = SubjectsArray.preOrderIterable();
+        ArrayList<PositionSubject> iterable = SubjectTree.preOrderIterable();
         for (int i = 0; i < iterable.getSize(); i++) {
             PositionSubject positionSubject = iterable.get(i);
-            matrix.get(positionSubject.getColumn())[positionSubject.getRow()] = 1;
+            ArrayList<Integer[]> positions = positionSubject.getPositions();
+            for (int j = 0; j < positions.getSize(); j++) {
+                matrix.get(positions.get(j)[0])[positions.get(j)[1]] = 1;
+            }
+
         }
 
         // Positionate free places
@@ -49,8 +53,8 @@ public class PositionSelectorController {
                     Rectangle subject = new Rectangle(30, 30, Color.web("e4e4e4"));
                     subject.setStroke(Color.web("3d3e3b"));
                     gridPane.add(subject, i, e);
-                    gridPane.setHalignment(subject, javafx.geometry.HPos.CENTER);
-                    gridPane.setValignment(subject, javafx.geometry.VPos.CENTER);
+                    GridPane.setHalignment(subject, javafx.geometry.HPos.CENTER);
+                    GridPane.setValignment(subject, javafx.geometry.VPos.CENTER);
                     subject.setOnMouseEntered(mouseEvent -> {
                         if (!mouseEvent.isPrimaryButtonDown()) {
                             subject.getScene().setCursor(Cursor.HAND);
@@ -63,8 +67,8 @@ public class PositionSelectorController {
                     });
                     subject.setOnMousePressed(mouseEvent -> {
                         position = new int[2];
-                        position[1] = gridPane.getRowIndex(subject);
-                        position[0] = gridPane.getColumnIndex(subject);
+                        position[1] = GridPane.getRowIndex(subject);
+                        position[0] = GridPane.getColumnIndex(subject);
                         Stage stage = (Stage) gridPane.getScene().getWindow();
                         stage.close();
                     });

@@ -17,7 +17,7 @@
          <children>
             <HBox prefHeight="29.0" prefWidth="728.0">
                <children>
-                  <Label alignment="CENTER" prefHeight="26.0" prefWidth="261.0" stylesheets="@styles/Editor.css" text="Asignaturas" />
+                  <Label alignment="CENTER" prefHeight="26.0" prefWidth="260.0" stylesheets="@styles/Editor.css" text="Asignaturas" />
                   <Label alignment="CENTER" prefHeight="26.0" prefWidth="183.0" stylesheets="@styles/Editor.css" text="Semestres" />
                   <Label alignment="CENTER" prefHeight="26.0" prefWidth="260.0" stylesheets="@styles/Editor.css" text="Estilos" />
                   <Label alignment="CENTER" prefHeight="26.0" prefWidth="172.0" stylesheets="@styles/Editor.css" text="Exportar" />

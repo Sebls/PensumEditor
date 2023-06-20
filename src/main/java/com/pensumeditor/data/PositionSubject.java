@@ -1,13 +1,11 @@
 package com.pensumeditor.data;
 
-
 import com.pensumeditor.datastructures.linear.ArrayList;
-
-import java.util.Objects;
 
 public class PositionSubject implements Comparable<PositionSubject> {
 
     private Subject subject;
+    private ArrayList<Integer[]> positions;
     private int column;
     private int row;
     private int subjectCode;
@@ -18,8 +16,8 @@ public class PositionSubject implements Comparable<PositionSubject> {
     }
 
     public PositionSubject(int column, int row, Subject subject) {
-        this.column = column;
-        this.row = row;
+        this.positions = new ArrayList<>();
+        positions.add(new Integer[]{column, row});
         this.subjectCode = subject.getCode();
         this.subject = subject;
     }
@@ -36,7 +34,7 @@ public class PositionSubject implements Comparable<PositionSubject> {
         this.subject = subject;
     }
 
-    public int getColumn() {
+    /*public int getColumn() {
         return column;
     }
 
@@ -50,15 +48,41 @@ public class PositionSubject implements Comparable<PositionSubject> {
 
     public void setRow(int row) {
         this.row = row;
+    }*/
+
+    public ArrayList<Integer[]> getPositions() {
+        return positions;
+    }
+
+    public void addPosition(int column, int row) {
+        positions.add(new Integer[]{column, row});
+    }
+
+    public boolean removePosition(int column, int row) {
+        for (int i=0; i < positions.getSize(); i ++) {
+           if (positions.get(i)[0] == column && positions.get(i)[1] == row) {
+               positions.remove(i);
+               return true;
+           }
+        }
+        return false;
     }
 
     @Override
     public String toString() {
-        return "PositionSubject{" +
+        String positionsString = "[";
+        for (int i = 0; i < positions.getSize(); i++) {
+            positionsString += "x= " + positions.get(i)[0] + " - y= " + positions.get(i)[1] + "\n";
+        }
+        positionsString += "]";
+        String s = "PositionSubject{" +
                 "subject=" + subject +
-                ", column=" + column +
-                ", row=" + row +
+                ", positions=\n" + positionsString +
                 '}';
+
+
+
+        return s;
     }
 
     @Override
@@ -79,5 +103,9 @@ public class PositionSubject implements Comparable<PositionSubject> {
     @Override
     public int compareTo(PositionSubject o) {
         return Integer.compare(this.subjectCode, o.subjectCode);
+    }
+
+    public int getCode() {
+        return subjectCode;
     }
 }

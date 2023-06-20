@@ -40,11 +40,11 @@ public class SubjectSelectorController implements Initializable {
     public Object selectedSubject;
     public int[] position;
 
-    private AVLTree<PositionSubject> SubjectsArray;
+    private AVLTree<PositionSubject> SubjectTree;
     private int semesterNumber;
 
-    public void loadSubjectsArray(AVLTree<PositionSubject> SubjectsArray, int semesterNumber) {
-        this.SubjectsArray = SubjectsArray;
+    public void loadSubjectTree(AVLTree<PositionSubject> SubjectTree, int semesterNumber) {
+        this.SubjectTree = SubjectTree;
         this.semesterNumber = semesterNumber;
     }
 
@@ -61,17 +61,15 @@ public class SubjectSelectorController implements Initializable {
         return this.position;
     }
 
-    private Scene scene;
-
     public void openPositionSelector() {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader();
             fxmlLoader.setLocation(getClass().getResource("PositionSelector.fxml"));
             AnchorPane positionSelector = fxmlLoader.load();
             PositionSelectorController psc = fxmlLoader.getController();
-            psc.loadSubjectsArray(SubjectsArray, semesterNumber);
+            psc.loadSubjectTree(SubjectTree, semesterNumber);
             psc.loadFreeGridPane();
-            scene = new Scene(positionSelector, 600, 400);
+            Scene scene = new Scene(positionSelector, 600, 400);
             Stage stage = new Stage();
             stage.setTitle("Position Selector");
             stage.setResizable(false);

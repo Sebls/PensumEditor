@@ -11,7 +11,10 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Bounds;
 import javafx.geometry.Pos;
+import javafx.scene.Cursor;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
@@ -23,17 +26,20 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class EditorController implements Initializable {
 
-    // Variables globales
+    // Global Variables
     private int semesterNumber;
     private int semesterSubjects;
-    private AVLTree<PositionSubject> SubjectArray;
 
+    // Data Structures
+    private AVLTree<PositionSubject> SubjectTree;
     private ArrayList<SubjectItemInfo[]> SubjectItemMatrix;
 
+    // Visual Nodes
     @FXML
     private VBox PaneScroll;
     @FXML
@@ -45,15 +51,16 @@ public class EditorController implements Initializable {
     @FXML
     private AnchorPane PensumPane;
 
+    // Control Variable
     private int option = 0;
 
-    private int distance_x = 200;
-    private int distance_y = 130;
+    // Subject Distribution
+    private final int distance_x = 230, distance_y = 130, space_x = 20, space_y = 20;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         IngSistemas Pensum = new IngSistemas();
-        SubjectArray = Pensum.GeneratePensum();
+        SubjectTree = Pensum.GeneratePensum();
         semesterNumber = 10;
         semesterSubjects = 6;
         adjustPensumSize();
@@ -63,50 +70,11 @@ public class EditorController implements Initializable {
         occultAll();
     }
 
-    public void updateSubjects() {
-        PensumPane.getChildren().clear();
-        int SubjectNumber = 0;
-        ArrayList<PositionSubject> iterable = SubjectArray.preOrderIterable();
-        for(int i=0; i<iterable.getSize(); i++) {
-            PositionSubject positionSubject = iterable.get(i);
-            int position_x = positionSubject.getColumn();
-            int position_y = positionSubject.getRow();
-            //if (position_x < semesterNumber && position_y < semesterSubjects) {
-            Pane SubjectItem = SubjectItemMatrix.get(position_x)[position_y].getSubjectItem();
-            SubjectItemController Controller = SubjectItemMatrix.get(position_x)[position_y].getController();
-            try {
-                PensumPane.getChildren().add(SubjectItem);
-                SubjectItem.addEventHandler(MouseEvent.MOUSE_CLICKED, onSubjectClicked);
-                SubjectItem = (Pane) PensumPane.getChildren().get(SubjectNumber);
-                SubjectItem.setVisible(true);
-                SubjectItem.setLayoutX(distance_x * position_x + 20);
-                SubjectItem.setLayoutY(distance_y * position_y + 20);
-                Controller.setSubjectData(positionSubject.getSubject());
-                SubjectNumber++;
-            } catch (Exception e) {
-
-            }
-            //}
-        }
-    }
-
     public void adjustPensumSize() {
         PaneScroll.setPrefWidth(155*semesterNumber+10);
         PensumPane.setPrefWidth(155*semesterNumber+10);
         PensumPane.setPrefHeight(135*semesterSubjects);
         SemesterBar.setPrefWidth(155*semesterNumber+10);
-    }
-
-    public void createSemesterBar() {
-        for (int i=0; i<semesterNumber; i++) {
-            Label semesterLabel = new Label("Semestre " + getRomanNumber(i + 1));
-            semesterLabel.setPrefWidth(155);
-            semesterLabel.setPrefHeight(40);
-            semesterLabel.setAlignment(Pos.CENTER);
-            SemesterBar.getChildren().add(semesterLabel);
-            semesterLabel = (Label) SemesterBar.getChildren().get(i);
-            semesterLabel.setLayoutX(distance_x*i + 20);
-        }
     }
 
     public void createSubjectItemMatrix() {
@@ -119,6 +87,7 @@ public class EditorController implements Initializable {
                     fxmlLoader.setLocation(getClass().getResource("SubjectItem.fxml"));
                     Pane SubjectItem = fxmlLoader.load();
                     SubjectItem.setVisible(false);
+                    makeDraggable(SubjectItem);
                     SubjectItemController Controller = fxmlLoader.getController();
                     SubjectItemInfo subjectItemInfo = new SubjectItemInfo(SubjectItem, Controller);
                     SubjectItemMatrix.get(i)[j] = subjectItemInfo;
@@ -129,34 +98,65 @@ public class EditorController implements Initializable {
         }
     }
 
+    public void createSemesterBar() {
+        for (int i=0; i<semesterNumber; i++) {
+            createSemesterLabel(i);
+        }
+    }
+
+    public void updateSubjects() {
+        PensumPane.getChildren().clear();
+        int SubjectNumber = 0;
+        ArrayList<PositionSubject> iterable = SubjectTree.preOrderIterable();
+        for(int i=0; i < iterable.getSize(); i++) {
+            PositionSubject positionSubject = iterable.get(i);
+            ArrayList<Integer[]> positions = positionSubject.getPositions();
+            for (int j=0; j < positions.getSize(); j ++){
+                int position_x = positions.get(j)[0];
+                int position_y = positions.get(j)[1];
+                Pane SubjectItem = SubjectItemMatrix.get(position_x)[position_y].getSubjectItem();
+                SubjectItemController Controller = SubjectItemMatrix.get(position_x)[position_y].getController();
+                try {
+                    PensumPane.getChildren().add(SubjectItem);
+                    SubjectItem = (Pane) PensumPane.getChildren().get(SubjectNumber);
+                    SubjectItem.addEventHandler(MouseEvent.MOUSE_CLICKED, onSubjectClicked);
+                    SubjectItem.setVisible(true);
+                    SubjectItem.setLayoutX(distance_x * position_x + space_x);
+                    SubjectItem.setLayoutY(distance_y * position_y + space_y);
+                    Controller.setSubjectData(positionSubject.getSubject());
+                    SubjectNumber++;
+                } catch (Exception ignored) {
+
+                }
+            }
+        }
+    }
+
     EventHandler<MouseEvent> onSubjectClicked = event -> {
         Pane pane = (Pane) event.getSource();
-        Label codeLabel = (Label) ((Pane) pane.getChildren().get(1)).getChildren().get(0);
-        int code = Integer.parseInt(codeLabel.getText());
-        PositionSubject subject = SubjectArray.search(new PositionSubject(code));
-        //if (subject.equals(new PositionSubject(code))) {
-            //int position_x = (int) Math.round((pane.getLayoutX()-20)/distance_x);
-            //int position_y = (int) Math.round((pane.getLayoutY()-20)/distance_y);
-            // Option:
-            // 0 = Show info
-            // 1 = Delete Subject
-            // 2 = Replace Subject
+        int position_x = (int) Math.round((pane.getLayoutX()-space_x)/distance_x), position_y = (int) Math.round((pane.getLayoutY()-space_y)/distance_y);
+        PositionSubject positionSubject = SubjectTree.search(new PositionSubject(getCodeBySubjectItem(pane)));
+
+        //System.out.println(positionSubject);
+
+        // Option:
+        // 0 = Show info
+        // 1 = Delete Subject
+        // 2 = Replace Subject
         switch (option) {
-            case 0:
-                displayInfo(subject);
-                break;
-            case 1:
-                deleteSubject(subject);
+            case 0 -> displayInfo(positionSubject);
+            case 1 -> {
+                deleteSubject(positionSubject, position_x, position_y);
                 option = 0;
-                break;
-            case 2:
+            }
+            case 2 -> {
                 try {
-                    replaceSubject(subject);
+                    replaceSubject(positionSubject, position_x, position_y);
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
+            }
         }
-        //}
     };
 
     @FXML
@@ -180,7 +180,7 @@ public class EditorController implements Initializable {
         fxmlLoader.setLocation(getClass().getResource("SubjectSelector.fxml"));
         VBox selector = fxmlLoader.load();
         SubjectSelectorController ssc = fxmlLoader.getController();
-        ssc.loadSubjectsArray(SubjectArray, semesterNumber);
+        ssc.loadSubjectTree(SubjectTree, semesterNumber);
         scene = new Scene(selector, 1100, 600);
         Stage stage = new Stage();
         stage.setTitle("Subject Selector");
@@ -191,7 +191,12 @@ public class EditorController implements Initializable {
         Subject subject = (Subject) ssc.getSelectedSubject();
         int[] position = ssc.getPosition();
 
-        SubjectArray.insert(new PositionSubject(position[0], position[1], subject));
+        PositionSubject searchedPositionSubject = SubjectTree.search(new PositionSubject(subject.getCode()));
+        if (searchedPositionSubject.getCode() == subject.getCode()) {
+            searchedPositionSubject.addPosition(position[0], position[1]);
+        } else {
+            SubjectTree.insert(new PositionSubject(position[0], position[1], subject));
+        }
 
         updateSubjects();
     }
@@ -212,15 +217,19 @@ public class EditorController implements Initializable {
                 //ex.printStackTrace();
             }
         }
-        Label semesterLabel = new Label("Semestre " + getRomanNumber(semesterNumber + 1));
+        createSemesterLabel(semesterNumber);
+        semesterNumber ++;
+        adjustPensumSize();
+    }
+
+    public void createSemesterLabel(int i) {
+        Label semesterLabel = new Label("Semestre " + getRomanNumber(i + 1));
         semesterLabel.setPrefWidth(155);
         semesterLabel.setPrefHeight(40);
         semesterLabel.setAlignment(Pos.CENTER);
         SemesterBar.getChildren().add(semesterLabel);
-        semesterLabel = (Label) SemesterBar.getChildren().get(semesterNumber);
-        semesterLabel.setLayoutX(distance_x*semesterNumber + 20);
-        semesterNumber ++;
-        adjustPensumSize();
+        semesterLabel = (Label) SemesterBar.getChildren().get(i);
+        semesterLabel.setLayoutX(distance_x*i + 20);
     }
 
     @FXML
@@ -229,13 +238,12 @@ public class EditorController implements Initializable {
         SubjectItemInfo[] SubjectItems = SubjectItemMatrix.popBack();
         for (SubjectItemInfo subjectItemInfo : SubjectItems) {
             int code = subjectItemInfo.getController().getSubjectCode();
-            SubjectArray.delete(new PositionSubject(code));
+            SubjectTree.delete(new PositionSubject(code));
         }
         updateSubjects();
         SemesterBar.getChildren().remove(semesterNumber);
         adjustPensumSize();
     }
-
 
     @FXML
     private Label InfoNameLabel;
@@ -261,18 +269,18 @@ public class EditorController implements Initializable {
         InfoPrerequisiteLabel.setText("Prerrequisitos: " + subject.getPrerequisite());
     }
 
-    public void deleteSubject(PositionSubject positionSubject) {
-        SubjectArray.delete(positionSubject);
+    public void deleteSubject(PositionSubject positionSubject, int position_x, int position_y) {
+        positionSubject.removePosition(position_x, position_y);
         updateSubjects();
         MenuPane.setVisible(true);
     }
 
-    public void replaceSubject(PositionSubject positionSubject) throws IOException {
+    public void replaceSubject(PositionSubject positionSubject, int position_x, int position_y) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader();
         fxmlLoader.setLocation(getClass().getResource("SubjectSelector.fxml"));
         VBox selector = fxmlLoader.load();
         SubjectSelectorController ssc = fxmlLoader.getController();
-        ssc.loadSubjectsArray(SubjectArray, semesterNumber);
+        ssc.loadSubjectTree(SubjectTree, semesterNumber);
         scene = new Scene(selector, 1100, 600);
         Stage stage = new Stage();
         stage.setTitle("Subject Selector");
@@ -280,9 +288,13 @@ public class EditorController implements Initializable {
         stage.showAndWait();
 
         Subject subject = (Subject) ssc.getSelectedSubject();
-        int position_x = positionSubject.getColumn(), position_y = positionSubject.getRow();
-        SubjectArray.delete(positionSubject);
-        SubjectArray.insert(new PositionSubject(position_x, position_y, subject));
+        positionSubject.removePosition(position_x, position_y);
+        PositionSubject searchedPositionSubject = SubjectTree.search(new PositionSubject(subject.getCode()));
+        if (searchedPositionSubject.getCode() == subject.getCode()) {
+            searchedPositionSubject.addPosition(position_x, position_y);
+        } else {
+            SubjectTree.insert(new PositionSubject(position_x, position_y, subject));
+        }
 
         updateSubjects();
         MenuPane.setVisible(true);
@@ -290,13 +302,101 @@ public class EditorController implements Initializable {
     }
 
     public void occultWindow(MouseEvent event) {
-        Pane window = (Pane) ( (ImageView) event.getSource() ).getParent();
+        Pane window = (Pane) ((ImageView) event.getSource()).getParent();
         window.setVisible(false);
     }
 
     public void occultAll() {
         InfoPane.setVisible(false);
     }
+
+
+    // Draggable Subjects
+    private double mouseAnchor_x;
+    private double mouseAnchor_y;
+    private double mouseDropped_x;
+    private double mouseDropped_y;
+    private Pane selectedPane;
+    private Bounds initialBounds;
+    private boolean swapOption;
+    public void makeDraggable(Pane pane) {
+
+        pane.setOnMouseEntered(mouseEvent -> {
+            if (!mouseEvent.isPrimaryButtonDown()) {
+                pane.getScene().setCursor(Cursor.HAND);
+            }
+        });
+
+        pane.setOnMouseExited(mouseEvent -> {
+            if (!mouseEvent.isPrimaryButtonDown()) {
+                pane.getScene().setCursor(Cursor.DEFAULT);
+                pane.setScaleX(1);
+                pane.setScaleY(1);
+                pane.setOpacity(1);
+                selectedPane = null;
+            }
+        });
+
+        pane.setOnMousePressed(mouseEvent -> {
+            mouseAnchor_x = mouseEvent.getX();
+            mouseAnchor_y = mouseEvent.getY();
+            selectedPane = pane;
+            selectedPane.toFront();
+            initialBounds = selectedPane.getBoundsInParent();
+            draggable();
+        });
+
+        pane.setOnMouseReleased(mouseEvent -> {
+            if (swapOption && !mouseEvent.isPrimaryButtonDown()) {
+
+                int old_x = (int) Math.round((initialBounds.getMinX()-space_x)/distance_x);
+                int old_y = (int) Math.round((initialBounds.getMinY()-space_y)/distance_y);
+                int new_x = (int) Math.round((mouseDropped_x-space_x)/distance_x);
+                int new_y = (int) Math.round((mouseDropped_y-space_y)/distance_y);
+
+                PositionSubject oldSubject = SubjectTree.search(new PositionSubject(getCodeBySubjectItem(pane)));
+                oldSubject.addPosition(new_x, new_y);
+                oldSubject.removePosition(old_x, old_y);
+
+                Pane newSubjectPane = SubjectItemMatrix.get(new_x)[new_y].getSubjectItem();
+                if (newSubjectPane.isVisible()) {
+                    PositionSubject newSubject = SubjectTree.search(new PositionSubject(getCodeBySubjectItem(newSubjectPane)));
+                    newSubject.addPosition(old_x, old_y);
+                    newSubject.removePosition(new_x, new_y);
+                }
+
+                SubjectItemInfo temp = SubjectItemMatrix.get(new_x)[new_y];
+                SubjectItemMatrix.get(new_x)[new_y] = SubjectItemMatrix.get(old_x)[old_y];
+                SubjectItemMatrix.get(old_x)[old_y] = temp;
+
+                updateSubjects();
+
+                selectedPane.setScaleX(1);
+                selectedPane.setScaleY(1);
+                pane.setOpacity(1);
+                selectedPane = new Pane();
+                swapOption = false;
+            }
+        });
+
+    }
+    public void draggable() {
+        PensumPane.setOnMouseDragged(mouseEvent -> {
+            selectedPane.setLayoutX(mouseEvent.getX() - mouseAnchor_x);
+            selectedPane.setLayoutY(mouseEvent.getY() - mouseAnchor_y);
+            mouseDropped_x = mouseEvent.getX() - mouseAnchor_x;
+            mouseDropped_y = mouseEvent.getY() - mouseAnchor_y;
+            selectedPane.setScaleX(0.9);
+            selectedPane.setScaleY(0.9);
+            selectedPane.setOpacity(0.8);
+            swapOption = true;
+        });
+    }
+
+    public int getCodeBySubjectItem(Pane pane) {
+        return Integer.parseInt(((Label) ((Pane) pane.getChildren().get(1)).getChildren().get(0)).getText());
+    }
+
 
     // From André Kramer Orten - https://stackoverflow.com/questions/12967896/converting-integers-to-roman-numerals-java
     public String getRomanNumber(int number) {
