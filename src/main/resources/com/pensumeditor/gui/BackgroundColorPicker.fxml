@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ColorPicker?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<VBox fillWidth="false" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="200.0" prefWidth="330.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.pensumeditor.gui.BackgroundColorPickerController">
+   <children>
+      <Text fill="#3d3e3b" strokeType="OUTSIDE" strokeWidth="0.0" text="Selecciona un color" textAlignment="CENTER" wrappingWidth="330.0" VBox.vgrow="ALWAYS">
+         <font>
+            <Font size="21.0" />
+         </font>
+         <VBox.margin>
+            <Insets top="20.0" />
+         </VBox.margin>
+      </Text>
+      <ColorPicker fx:id="colorPicker" VBox.vgrow="ALWAYS">
+         <VBox.margin>
+            <Insets left="100.0" top="35.0" />
+         </VBox.margin></ColorPicker>
+      <Button mnemonicParsing="false" onAction="#saveSelectedColor" prefHeight="25.0" prefWidth="100.0" text="Cargar" VBox.vgrow="ALWAYS">
+         <VBox.margin>
+            <Insets left="120.0" top="40.0" />
+         </VBox.margin></Button>
+   </children>
+</VBox>

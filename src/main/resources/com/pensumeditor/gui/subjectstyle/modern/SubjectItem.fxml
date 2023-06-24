@@ -4,7 +4,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.Pane?>
 
-<Pane prefHeight="105.0" prefWidth="155.0" style="-fx-background-color: white; -fx-background-radius: 0 10 0 0;" styleClass="subjectItem" stylesheets="@styles/SubjectStyle.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.pensumeditor.gui.SubjectItemController">
+<Pane maxHeight="105.0" maxWidth="155.0" prefHeight="105.0" prefWidth="155.0" style="-fx-background-color: white; -fx-background-radius: 0 10 0 0;" styleClass="subjectItem" stylesheets="@SubjectStyle.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.pensumeditor.gui.SubjectItemController">
    <children>
       <Pane fx:id="colorPane" layoutX="100.0" prefHeight="105.0" prefWidth="55.0" style="-fx-background-color: #878787; -fx-background-radius: 0 10 0 0;">
          <children>

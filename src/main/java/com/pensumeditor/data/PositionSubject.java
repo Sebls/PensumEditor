@@ -80,8 +80,6 @@ public class PositionSubject implements Comparable<PositionSubject> {
                 ", positions=\n" + positionsString +
                 '}';
 
-
-
         return s;
     }
 
