@@ -1,4 +1,4 @@
-package com.pensumeditor.datastructures.nonlinear;
+package com.pensumeditor.datastructures.trees;
 
 import com.pensumeditor.datastructures.linear.ArrayList;
 import com.pensumeditor.datastructures.linear.CircularArrayList;
@@ -214,6 +214,8 @@ public class AVLTree <T extends Comparable<T>> implements Tree <T> {
             if (N.key.compareTo(x) >= 0) {
                 L.add(N.key);
             }
+            System.out.println(N.key);
+            System.out.println(N.parent);
             N = next(N);
         }
         return L;

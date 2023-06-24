@@ -8,5 +8,5 @@ module com.pensumeditor.pensumeditor {
     exports com.pensumeditor.gui;
     exports com.pensumeditor.data;
     exports com.pensumeditor.datastructures.linear;
-    exports com.pensumeditor.datastructures.nonlinear;
+    exports com.pensumeditor.datastructures.trees;
 }

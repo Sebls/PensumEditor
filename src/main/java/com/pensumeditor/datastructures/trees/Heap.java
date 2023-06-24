@@ -1,4 +1,4 @@
-package com.pensumeditor.datastructures.nonlinear;
+package com.pensumeditor.datastructures.trees;
 
 public class Heap {
     private int end;

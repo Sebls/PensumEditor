@@ -2,7 +2,7 @@ package com.pensumeditor.gui;
 
 import com.pensumeditor.data.PositionSubject;
 import com.pensumeditor.datastructures.linear.ArrayList;
-import com.pensumeditor.datastructures.nonlinear.AVLTree;
+import com.pensumeditor.datastructures.trees.AVLTree;
 
 import javafx.fxml.FXML;
 import javafx.scene.Cursor;

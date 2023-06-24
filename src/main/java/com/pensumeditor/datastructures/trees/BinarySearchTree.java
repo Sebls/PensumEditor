@@ -1,4 +1,4 @@
-package com.pensumeditor.datastructures.nonlinear;
+package com.pensumeditor.datastructures.trees;
 
 import com.pensumeditor.datastructures.linear.CircularArrayList;
 import com.pensumeditor.datastructures.linear.List;

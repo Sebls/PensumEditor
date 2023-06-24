@@ -2,8 +2,7 @@ package com.pensumeditor.pensums;
 
 import com.pensumeditor.data.PositionSubject;
 import com.pensumeditor.data.Subject;
-import com.pensumeditor.datastructures.linear.ArrayList;
-import com.pensumeditor.datastructures.nonlinear.AVLTree;
+import com.pensumeditor.datastructures.trees.AVLTree;
 
 
 public class IngSistemas {

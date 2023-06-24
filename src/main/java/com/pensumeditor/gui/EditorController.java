@@ -4,7 +4,7 @@ import com.pensumeditor.data.PositionSubject;
 import com.pensumeditor.data.Subject;
 import com.pensumeditor.data.SubjectItemInfo;
 import com.pensumeditor.datastructures.linear.ArrayList;
-import com.pensumeditor.datastructures.nonlinear.AVLTree;
+import com.pensumeditor.datastructures.trees.AVLTree;
 import com.pensumeditor.pensums.IngSistemas;
 
 import javafx.event.EventHandler;
@@ -14,7 +14,6 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Bounds;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
@@ -26,7 +25,6 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class EditorController implements Initializable {

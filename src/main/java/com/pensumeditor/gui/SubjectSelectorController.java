@@ -4,7 +4,7 @@ import com.pensumeditor.data.PositionSubject;
 import com.pensumeditor.data.Subject;
 import com.pensumeditor.datastructures.linear.ArrayList;
 
-import com.pensumeditor.datastructures.nonlinear.AVLTree;
+import com.pensumeditor.datastructures.trees.AVLTree;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.fxml.FXML;
