@@ -15,6 +15,10 @@ public class ArrayList <T> implements List <T> {
         capacity = factor;
     }
 
+    public ArrayList(int n) {
+        array = (T[]) new Object[factor];
+        size = capacity = n;
+    }
     public int getSize() {
         return size;
     }
