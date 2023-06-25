@@ -2,9 +2,25 @@ package com.pensumeditor.datastructures.directaccess;
 
 import com.pensumeditor.datastructures.linear.ArrayList;
 import com.pensumeditor.datastructures.linear.LinkedList;
+import com.pensumeditor.datastructures.trees.AVLTree;
 
 public class HashMap<K,V>{
-    private ArrayList<LinkedList<V>> hashTable;
+    private ArrayList<LinkedList<Node>> hashTable;
+    public class Node {
+        private K key;
+        private V value;
+        public Node(K key, V value) {
+            this.key = key;
+            this.value = value;
+        }
+        public K getKey() {
+            return key;
+        }
+
+        public V getValue() {
+            return value;
+        }
+    }
     private int numElements;
     private int size;
     private boolean loadFactor() {
@@ -17,38 +33,30 @@ public class HashMap<K,V>{
             hashTable.add(new LinkedList<>());
     }
 
-    public boolean containsKey(int key) {
-        return hashTable.get(key).isEmpty();
+    private boolean containsKey(K key) {
+        int index = hash(key);
+        return hashTable.get(index).search(Node(key,Node.get)) >= 0; //no se como hacer esta parte
     }
-
-    public boolean containsValue(V data) {
-        int key = hash(data);
-        return hashTable.get(key).search(data) >= 0;
-    }
-
-    private int hash(V value) {
-        if (value instanceof String valueM) {
-            int key = 0;
-            for (int i = 0; i < valueM.length(); i++) {
-                key += valueM.charAt(i);
+    private int hash(K key) {
+        if (key instanceof String || key instanceof Integer) {
+            if (key instanceof String valueM) {
+                int hashed = 0;
+                for (int i = 0; i < valueM.length(); i++) {
+                    hashed += valueM.charAt(i);
+                }
+                return hashed % size;
+            } else {
+                return (int) key % size;
             }
-            return key % size;
-        } else {
-            return (int) value % size;
-        }
-    }
-
-    public void put(V data) {
-        int key = hash(data);
-        hashTable.get(key).pushFront(data);
-    }
-
-    /*public V get(V data) {
-        if (containsValue(data)) {
-            return data;
         }
         else {
-
+            throw new TypeOfKeyStillNotSupportedException(); //falta revisar
         }
-    }*/
+    }
+
+    public void put(K key, V value) {
+        int index = hash(key);
+        hashTable.get(index).pushFront(new Node(key, value));
+        numElements++;
+    }
 }
