@@ -10,14 +10,15 @@ public class ArrayList <T> implements List <T> {
     private int factor = 2;
 
     public ArrayList() {
-        array = (T[]) new Object[factor];
+        array = (T[]) new Object[16];
         size = 0;
-        capacity = factor;
+        capacity = 16;
     }
 
-    public ArrayList(int n) {
-        array = (T[]) new Object[factor];
-        size = capacity = n;
+    public ArrayList(int capacity) {
+        array = (T[]) new Object[capacity];
+        size = 0;
+        this.capacity = capacity;
     }
     public int getSize() {
         return size;
