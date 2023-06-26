@@ -39,11 +39,11 @@ public class HashMap<K, V>{
     private double loadFactor;
 
     public HashMap() {
-        this(16, 0.9);
+        this(16, 0.75);
     }
 
     public HashMap(int capacity) {
-        this(capacity, 0.9);
+        this(capacity, 0.75);
     }
 
     public HashMap(int capacity, double loadFactor) {
@@ -53,17 +53,16 @@ public class HashMap<K, V>{
     }
 
     private int hash(K key, int m) {
-        /*if (key instanceof Integer value){
+        if (key instanceof Integer value){
             //return key.hashCode() % m;
             //return UniversalFamily(value, m);
-            //return value % m;
+            return value % m;
         } else if (key instanceof String value) {
             return PolyHash(value, m);
             // return HashString(value, m);
         } else {
-            return key.hashCode() % m;
-        }*/
-        return key.hashCode() % m;
+            return Objects.hash(key) % m;
+        }
     }
 
 
@@ -126,21 +125,19 @@ public class HashMap<K, V>{
                 }
             }
         }
-        return null;
-        //throw new KeyNotFoundException();
+        throw new KeyNotFoundException();
     }
 
-    public boolean remove(K key) {
+    public V remove(K key) {
         int index = hash(key, capacity);
         if (Objects.nonNull(hashTable[index]) && hashTable[index].getSize() > 0) {
             for (int i = 0; i < hashTable[index].getSize(); i++) {
                 if (hashTable[index].get(i).getKey().equals(key)) {
-                    hashTable[index].remove(i).getValue();
-                    return true;
+                    return hashTable[index].remove(i).getValue();
                 }
             }
         }
-        return false;
+        throw new KeyNotFoundException();
     }
 
     private boolean containsKey(K key) {

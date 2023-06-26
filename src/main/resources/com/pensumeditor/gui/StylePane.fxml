@@ -27,11 +27,6 @@
                   <Insets top="3.0" />
                </VBox.margin>
             </Button>
-            <StackPane prefHeight="29.0" prefWidth="220.0">
-               <VBox.margin>
-                  <Insets top="5.0" />
-               </VBox.margin>
-            </StackPane>
          </children>
          <padding>
             <Insets left="10.0" right="10.0" />

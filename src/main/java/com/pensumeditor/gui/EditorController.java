@@ -77,7 +77,7 @@ public class EditorController implements Initializable {
     private String styleName = "modern";
 
     // Subject Distribution
-    private final int distance_x = 230, distance_y = 130, space_x = 20, space_y = 20;
+    private int distance_x = 230, distance_y = 130, space_x = 20, space_y = 20;
 
     // Color Map
     private HashMap<String, SubjectColor> colorMap = new HashMap<String, SubjectColor>();
@@ -141,13 +141,14 @@ public class EditorController implements Initializable {
                     SubjectItemInfo subjectItemInfo = new SubjectItemInfo(SubjectItem, Controller);
                     SubjectItemMatrix.get(i)[j] = subjectItemInfo;
                 } catch (IOException ex) {
-                    //ex.printStackTrace();
+                    ex.printStackTrace();
                 }
             }
         }
     }
 
     public void createSemesterBar() {
+        SemesterBar.getChildren().clear();
         for (int i=0; i<semesterNumber; i++) {
             createSemesterLabel(i);
         }
@@ -175,8 +176,8 @@ public class EditorController implements Initializable {
                     Subject subject = positionSubject.getSubject();
                     Controller.setSubjectData(subject, colorMap.get(subject.getGroup()).getColorCode());
                     SubjectNumber++;
-                } catch (Exception ignored) {
-
+                } catch (Exception ex) {
+                    ex.printStackTrace();
                 }
             }
         }
@@ -573,10 +574,16 @@ public class EditorController implements Initializable {
         //stage.initStyle(StageStyle.UNDECORATED);
         stage.showAndWait();
 
-        /*String selectedStyle = ssc.getSelectedStyle();
+        StyleInfo selectedStyle = ssc.getSelectedStyle();
         if (selectedStyle != null) {
-            this.styleName = selectedStyle;
-        }*/
+            this.styleName = selectedStyle.getId();
+            this.distance_x = selectedStyle.getDistance_x();
+            this.distance_y = selectedStyle.getDistance_y();
+            this.space_x = selectedStyle.getSpace_x();
+            this.space_y = selectedStyle.getSpace_y();
+            createSubjectItemMatrix();
+            updateSubjects();
+        }
     }
 
     public void changeColorSubject(PositionSubject positionSubject, int position_x, int position_y) throws IOException {

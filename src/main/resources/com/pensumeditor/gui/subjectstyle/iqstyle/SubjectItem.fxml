@@ -5,7 +5,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="107.0" maxWidth="153.0" prefHeight="107.0" prefWidth="153.0" styleClass="subjectItem" stylesheets="@SubjectStyle.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+<Pane maxHeight="107.0" maxWidth="153.0" prefHeight="107.0" prefWidth="153.0" styleClass="subjectItem" stylesheets="@SubjectStyle.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.pensumeditor.gui.SubjectItemController">
    <children>
       <Pane fx:id="colorPane" layoutX="115.0" prefHeight="107.0" prefWidth="38.0" style="-fx-background-color: #00a182;">
          <children>
@@ -17,7 +17,7 @@
          </children>
       </Pane>
       <Rectangle fill="#002e47" height="29.0" layoutY="78.0" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="0.0" width="115.0" />
-      <Rectangle fill="#f3f7f6" height="77.0" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="0.0" width="95.0" />
+      <Rectangle fill="#f3f7f6" height="77.0" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="0.0" width="115.0" />
       <Label fx:id="nameLabel" contentDisplay="CENTER" layoutX="11.0" prefHeight="77.0" prefWidth="95.0" style="-fx-font-size: 13; -fx-font-family: Roboto;" text="Nombre" textFill="#3d3e3b" wrapText="true">
          <font>
             <Font size="13.0" />
