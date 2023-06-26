@@ -76,7 +76,7 @@
                         <Cursor fx:constant="OPEN_HAND" />
                      </cursor>
                   </ImageView>
-                  <ImageView disable="true" fitHeight="60.0" fitWidth="60.0" opacity="0.47" pickOnBounds="true" preserveRatio="true" styleClass="iconMenu">
+                  <ImageView fitHeight="60.0" fitWidth="60.0" onMouseClicked="#changeStyle" pickOnBounds="true" preserveRatio="true" styleClass="iconMenu">
                      <image>
                         <Image url="@editor/edit_style.png" />
                      </image>
@@ -93,17 +93,17 @@
                      </cursor>
                   </ImageView>
                   <Separator orientation="VERTICAL" prefHeight="200.0" stylesheets="@styles/Editor.css" />
-                  <ImageView fitHeight="60.0" fitWidth="60.0" onMouseClicked="#exportPDF" pickOnBounds="true" preserveRatio="true" styleClass="iconMenu">
+                  <ImageView fitHeight="60.0" fitWidth="60.0" onMouseClicked="#exportPNG" pickOnBounds="true" preserveRatio="true" styleClass="iconMenu">
                      <image>
-                        <Image url="@editor/pdf_export.png" />
+                        <Image url="@editor/png_export.png" />
                      </image>
                      <cursor>
                         <Cursor fx:constant="OPEN_HAND" />
                      </cursor>
                   </ImageView>
-                  <ImageView fitHeight="60.0" fitWidth="60.0" onMouseClicked="#exportPNG" pickOnBounds="true" preserveRatio="true" styleClass="iconMenu">
+                  <ImageView fitHeight="60.0" fitWidth="60.0" onMouseClicked="#exportPDF" pickOnBounds="true" preserveRatio="true" styleClass="iconMenu" visible="false">
                      <image>
-                        <Image url="@editor/png_export.png" />
+                        <Image url="@editor/pdf_export.png" />
                      </image>
                      <cursor>
                         <Cursor fx:constant="OPEN_HAND" />

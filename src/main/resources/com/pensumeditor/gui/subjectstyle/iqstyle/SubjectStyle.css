@@ -1,0 +1,5 @@
+.subjectItem:hover {
+    -fx-cursor: Hand;
+    -fx-scale-x: 1.02;
+    -fx-scale-y: 1.02;
+}

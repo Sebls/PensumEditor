@@ -16,6 +16,10 @@ public class SubjectItemController {
     private Label creditsLabel;
     @FXML
     private Label nameLabel;
+    @FXML
+    private Label compLabel;
+    @FXML
+    private Label groupLabel;
 
     private String colorCode;
 

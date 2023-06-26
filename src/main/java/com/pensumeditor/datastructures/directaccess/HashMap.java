@@ -38,11 +38,6 @@ public class HashMap<K, V>{
     private int capacity;
     private double loadFactor;
 
-    //HashFunction for integers parameters
-    private final Random random;
-    private int a, b;
-    private int p;
-
     public HashMap() {
         this(16, 0.9);
     }
@@ -52,37 +47,51 @@ public class HashMap<K, V>{
     }
 
     public HashMap(int capacity, double loadFactor) {
-        random = new Random();
-        this.p = 10000019;
-        this.a = random.nextInt(1, p-1);
-        this.b = random.nextInt(0, p-1);
         this.capacity = capacity;
         this.loadFactor = loadFactor;
         hashTable = new LinkedList[capacity];
     }
 
-
     private int hash(K key, int m) {
-        if (key instanceof String value) {
-            return modFunction(PolyHash(value), capacity);
-        } else if (key instanceof Integer value){
-            return modFunction(modFunction(a*value+b, p), m);
+        /*if (key instanceof Integer value){
+            //return key.hashCode() % m;
+            //return UniversalFamily(value, m);
+            //return value % m;
+        } else if (key instanceof String value) {
+            return PolyHash(value, m);
+            // return HashString(value, m);
         } else {
-            throw new TypeOfKeyStillNotSupportedException();
-        }
+            return key.hashCode() % m;
+        }*/
+        return key.hashCode() % m;
     }
 
-    public int PolyHash(String s) {
+
+    // Hash Functions
+    public int HashString(String s, int m) {
+        int hash = 0;
+        for (int i = 0; i < s.length(); i ++) {
+            hash += s.charAt(i);
+        }
+        return hash % m;
+    }
+
+    public int PolyHash(String s, int m) {
         int hash = 0;
         for (int i = s.length()-1; i >= 0 ; i --) {
-            hash = modFunction(hash * 31 + s.charAt(i), p);
+            hash = (hash * 31 + s.charAt(i)) % m;
         }
         return hash;
     }
 
-    public int modFunction(int a, int mod) {
-        return (a % mod + mod) % mod;
+    public int UniversalFamily(int key, int m) {
+        int p = 10000019;
+        int a = 31;
+        int b = 7544;
+        return ((a*key) % p + b % p) % m;
     }
+    private int largestTailSize = 0;
+    private int collisions = 0;
 
     public void put(K key, V value) {
         if (checkLoadFactor()) {
@@ -91,9 +100,21 @@ public class HashMap<K, V>{
         int index = hash(key, capacity);
         if (Objects.isNull(hashTable[index])) {
             hashTable[index] = new LinkedList<MapNode>();
+        } /*else if (hashTable[index].getSize() > 0) {
+            collisions ++;
         }
+        if (hashTable[index].getSize() + 1 > largestTailSize) {
+            largestTailSize = hashTable[index].getSize() + 1;
+        }*/
         hashTable[index].add(new MapNode(key,value));
         size++;
+    }
+
+    public int getCollisions() {
+        return collisions;
+    }
+    public int getLargestTailSize() {
+        return largestTailSize;
     }
 
     public V get(K key) {
@@ -105,19 +126,21 @@ public class HashMap<K, V>{
                 }
             }
         }
-        throw new KeyNotFoundException();
+        return null;
+        //throw new KeyNotFoundException();
     }
 
-    public V remove(K key) {
+    public boolean remove(K key) {
         int index = hash(key, capacity);
         if (Objects.nonNull(hashTable[index]) && hashTable[index].getSize() > 0) {
-            for (int i = 0; i < capacity; i++) {
+            for (int i = 0; i < hashTable[index].getSize(); i++) {
                 if (hashTable[index].get(i).getKey().equals(key)) {
-                    return hashTable[index].remove(i).getValue();
+                    hashTable[index].remove(i).getValue();
+                    return true;
                 }
             }
         }
-        throw new KeyNotFoundException();
+        return false;
     }
 
     private boolean containsKey(K key) {
@@ -138,8 +161,8 @@ public class HashMap<K, V>{
 
     private void rehash(){
         LinkedList<MapNode>[] newTable = new LinkedList[capacity * 2];
-        this.a = random.nextInt(1, p-1);
-        this.b = random.nextInt(0, p-1);
+        //this.a = random.nextInt(1, p-1);
+        //this.b = random.nextInt(0, p-1);
         for (int i = 0;i < hashTable.length;i++){
              if (Objects.nonNull(hashTable[i])) {
                  for (int j = 0; j < hashTable[i].getSize(); j++){

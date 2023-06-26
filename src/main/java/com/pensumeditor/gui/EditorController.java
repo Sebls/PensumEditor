@@ -3,6 +3,7 @@ package com.pensumeditor.gui;
 import com.pensumeditor.data.*;
 import com.pensumeditor.datastructures.linear.ArrayList;
 import com.pensumeditor.datastructures.trees.AVLTree;
+import com.pensumeditor.datastructures.directaccess.HashMap;
 import com.pensumeditor.pensums.IngSistemas;
 
 import javafx.event.EventHandler;
@@ -12,6 +13,7 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Bounds;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.control.Label;
@@ -31,7 +33,10 @@ import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 
 import javax.imageio.ImageIO;
+import javax.xml.parsers.ParserConfigurationException;
+
 import javafx.embed.swing.SwingFXUtils;
+import org.xml.sax.SAXException;
 
 import java.awt.*;
 import java.io.File;
@@ -39,7 +44,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
 import java.util.ResourceBundle;
 
 public class EditorController implements Initializable {
@@ -198,7 +202,6 @@ public class EditorController implements Initializable {
             case 0 -> displayInfo(positionSubject, position_x, position_y);
             case 1 -> {
                 deleteSubject(positionSubject, position_x, position_y);
-                option = 0;
             }
             case 2 -> {
                 try {
@@ -215,6 +218,7 @@ public class EditorController implements Initializable {
                 }
             }
         }
+        option = 0;
     };
 
     @FXML
@@ -361,6 +365,11 @@ public class EditorController implements Initializable {
     public void deleteSubject(PositionSubject positionSubject, int position_x, int position_y) {
         positionSubject.removePosition(position_x, position_y);
         SubjectItemMatrix.get(position_x)[position_y].getSubjectItem().setVisible(false);
+        String colorCode = SubjectItemMatrix.get(position_x)[position_y].getController().getColorCode();
+        int index = specialPositions.search(new SpecialPositionColor(colorCode, new int[]{position_x, position_y}));
+        if (index != -1) {
+            specialPositions.remove(index);
+        }
         updateSubjects();
         hideMessage();
     }
@@ -388,7 +397,6 @@ public class EditorController implements Initializable {
 
         updateSubjects();
         hideMessage();
-        option = 0;
     }
 
     public void occultInfo() {
@@ -550,13 +558,34 @@ public class EditorController implements Initializable {
         }
     }
 
+    @FXML
+    public void changeStyle() throws IOException, ParserConfigurationException, SAXException {
+        FXMLLoader fxmlLoader = new FXMLLoader();
+        fxmlLoader.setLocation(getClass().getResource("StyleSelector.fxml"));
+        AnchorPane styleSelector = fxmlLoader.load();
+        StyleSelectorController ssc = fxmlLoader.getController();
+        ssc.loadStyles();
+        scene = new Scene(styleSelector, 480, 600);
+        Stage stage = new Stage();
+        stage.setTitle("Style Selector");
+        stage.setScene(scene);
+        stage.setResizable(false);
+        //stage.initStyle(StageStyle.UNDECORATED);
+        stage.showAndWait();
+
+        /*String selectedStyle = ssc.getSelectedStyle();
+        if (selectedStyle != null) {
+            this.styleName = selectedStyle;
+        }*/
+    }
+
     public void changeColorSubject(PositionSubject positionSubject, int position_x, int position_y) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader();
         fxmlLoader.setLocation(getClass().getResource("SubjectColorPicker.fxml"));
         AnchorPane colorPicker = fxmlLoader.load();
         SubjectColorPickerController cp = fxmlLoader.getController();
         cp.loadActualStyle(styleName);
-        cp.loadActualColor(colorMap.get(positionSubject.getSubject().getGroup()).getColorCode());
+        cp.loadActualColor(SubjectItemMatrix.get(position_x)[position_y].getController().getColorCode());
         scene = new Scene(colorPicker, 490, 290);
         Stage stage = new Stage();
         stage.setTitle("Subject Color Picker");
@@ -582,13 +611,21 @@ public class EditorController implements Initializable {
                     SubjectItemMatrix.get(position[0])[position[1]].getController().setSubjectColor(specialPositions.get(i).getColorCode());
                 }
             } else {
-                int[] position = new int[]{position_x, position_y};
-                specialPositions.add(new SpecialPositionColor(hexColor, position));
-                SubjectItemMatrix.get(position[0])[position[1]].getController().setSubjectColor(hexColor);
+                SubjectItemController subject = SubjectItemMatrix.get(position_x)[position_y].getController();
+                String groupColor = colorMap.get(SubjectTree.search(new PositionSubject(subject.getSubjectCode())).getSubject().getGroup()).getColorCode();
+                if (subject.getColorCode().equals(groupColor)) {
+                    specialPositions.add(new SpecialPositionColor(hexColor, new int[]{position_x, position_y}));
+                } else {
+                    for (int i = 0; i < specialPositions.getSize(); i ++) {
+                        if (specialPositions.get(i).getPosition()[0] == position_x && specialPositions.get(i).getPosition()[1] == position_y) {
+                            specialPositions.get(i).setColorCode(hexColor);
+                            break;
+                        }
+                    }
+                }
+                SubjectItemMatrix.get(position_x)[position_y].getController().setSubjectColor(hexColor);
             }
         }
-
-
         hideMessage();
     }
 

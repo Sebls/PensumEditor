@@ -32,7 +32,7 @@
 .infoPaneBackground {
     -fx-background-color: #f6f6f6;
     -fx-effect: dropshadow(one-pass-box , rgba(0, 0, 0, 0.2), 10, 0.5, 0.0, 0.0);
-    -fx-opacity: 0.8;
+    -fx-opacity: 0.9;
 }
 
 .infoPane {

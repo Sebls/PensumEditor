@@ -34,6 +34,7 @@ public class SubjectColorPickerController {
         SubjectItem.setLayoutY(90);
     }
     public void loadActualColor(String hexColor) {
+        colorPicker.setValue(Color.web(hexColor));
         SubjectController.setSubjectColor(hexColor);
     }
     public String getHexByColor(Color color) {
